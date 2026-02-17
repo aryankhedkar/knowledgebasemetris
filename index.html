@@ -658,7 +658,7 @@
     .contact-btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
 
     /* ── Footer ── */
-    .site-footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 32px 24px; }
+    .site-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 32px 24px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0)); }
     .footer-inner {
       max-width: 1400px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
