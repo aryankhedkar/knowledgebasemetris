@@ -620,39 +620,39 @@
 
     /* ── Contact CTA Section ── */
     .contact-section {
-      max-width: 1400px; margin: 0 auto; padding: 0 24px 64px;
+      max-width: 1400px; margin: 0 auto; padding: 0 24px 40px;
     }
     .contact-card {
       background: linear-gradient(135deg, var(--bg-secondary), var(--primary-bg));
-      border: 1px solid var(--border); border-radius: var(--radius-xl);
-      padding: 48px; display: flex; align-items: center; justify-content: space-between;
-      gap: 32px; position: relative; overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 24px 28px; display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; position: relative; overflow: hidden;
     }
     .contact-card::before {
-      content: ''; position: absolute; right: -40px; bottom: -40px;
-      width: 200px; height: 200px;
+      content: ''; position: absolute; right: -30px; bottom: -30px;
+      width: 140px; height: 140px;
       background: radial-gradient(circle, rgba(18,188,127,0.1) 0%, transparent 70%);
       pointer-events: none;
     }
     .contact-info { position: relative; }
-    .contact-info h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .contact-info p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 500px; }
+    .contact-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
+    .contact-info p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 420px; }
     .contact-info .response-time {
-      display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
-      font-size: 13px; font-weight: 600; color: var(--primary);
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 8px;
+      font-size: 12px; font-weight: 600; color: var(--primary);
     }
-    .contact-actions { display: flex; gap: 10px; position: relative; flex-shrink: 0; }
+    .contact-actions { display: flex; gap: 8px; position: relative; flex-shrink: 0; }
     .contact-btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 24px; background: var(--primary); color: #fff;
-      font-size: 14px; font-weight: 600; border-radius: var(--radius);
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 18px; background: var(--primary); color: #fff;
+      font-size: 13px; font-weight: 600; border-radius: var(--radius);
       text-decoration: none; transition: all var(--transition); border: none; cursor: pointer;
     }
     .contact-btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
     .contact-btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 24px; background: var(--surface); color: var(--text-primary);
-      font-size: 14px; font-weight: 600; border-radius: var(--radius);
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 18px; background: var(--surface); color: var(--text-primary);
+      font-size: 13px; font-weight: 600; border-radius: var(--radius);
       text-decoration: none; transition: all var(--transition); border: 1px solid var(--border);
     }
     .contact-btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
@@ -742,7 +742,7 @@
       .mobile-sidebar-overlay.open { display: block; }
       .category-grid { grid-template-columns: 1fr; }
       .article-nav { flex-direction: column; }
-      .contact-card { flex-direction: column; text-align: center; padding: 32px 24px; }
+      .contact-card { flex-direction: column; text-align: center; padding: 20px 20px; }
       .contact-info p { max-width: 100%; }
       .contact-actions { justify-content: center; }
       .formula-item { flex-direction: column; gap: 4px; }
@@ -759,7 +759,7 @@
       .popular-chip { font-size: 11px; padding: 6px 10px; }
       .header-inner { padding: 0 16px; }
       .header-cta span { display: none; }
-      .contact-section { padding: 0 16px 48px; }
+      .contact-section { padding: 0 16px 32px; }
     }
 
     /* ── Print ── */
