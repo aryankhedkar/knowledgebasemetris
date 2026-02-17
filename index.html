@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metris Support &mdash; Knowledge Base</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='31' viewBox='0 0 28 31' fill='none'%3E%3Cg clip-path='url(%23c)'%3E%3Cpath d='M.879 6.56 18.735 0v5.154L.879 11.714V6.56Z' fill='%2316a34a'/%3E%3Cpath d='M.879 14.76 18.735 8.2v5.154L.879 19.914V14.76Z' fill='%2316a34a'/%3E%3Cpath d='M.879 22.96 18.735 16.4v5.155L.879 28.114V22.96Z' fill='%2316a34a'/%3E%3Cpath d='M18.734 5.154 27.663 8.903v5.154l-8.929-3.749V5.154Z' fill='%2316a34a'/%3E%3Cpath d='M18.734 13.355 27.663 17.103v5.155l-8.929-3.749v-5.154Z' fill='%2316a34a'/%3E%3Cpath d='M18.734 21.555 27.663 25.303v5.154l-8.929-3.748v-5.154Z' fill='%2316a34a'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='c'%3E%3Crect width='28' height='31' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f7f8fa;
+      --bg-tertiary: #f0f2f5;
+      --surface: #ffffff;
+      --surface-hover: #f7f8fa;
+      --text-primary: #101828;
+      --text-secondary: #475467;
+      --text-tertiary: #727272;
+      --text-inverse: #ffffff;
+      --border: #eaecf0;
+      --border-secondary: #d7d9de;
+      --primary: #12BC7F;
+      --primary-light: #41C999;
+      --primary-lighter: #C3EEDF;
+      --primary-bg: #e8f9f2;
+      --primary-dark: #0E8D60;
+      --accent-blue: #278EE1;
+      --accent-blue-bg: #eff6ff;
+      --accent-amber: #d97706;
+      --accent-amber-bg: #fffbeb;
+      --destructive: #df3838;
+      --warning: #f59e0b;
+      --ring: #12BC7F;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --shadow-sm: 0 1px 2px rgba(16,24,40,0.05);
+      --shadow-md: 0 4px 12px rgba(16,24,40,0.08);
+      --shadow-lg: 0 12px 40px rgba(16,24,40,0.12);
+      --shadow-xl: 0 24px 60px rgba(16,24,40,0.16);
+      --transition: 200ms ease;
+      --header-height: 64px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0e1218;
+      --bg-secondary: #161a22;
+      --bg-tertiary: #1e2330;
+      --surface: #161a22;
+      --surface-hover: #1e2330;
+      --text-primary: #f0f2f5;
+      --text-secondary: #a1a7b3;
+      --text-tertiary: #6b7280;
+      --text-inverse: #101828;
+      --border: #2c323d;
+      --border-secondary: #3a4050;
+      --primary: #41C999;
+      --primary-light: #5ed4aa;
+      --primary-lighter: #1a4d3a;
+      --primary-bg: #0d2a1f;
+      --primary-dark: #12BC7F;
+      --accent-blue: #60a5fa;
+      --accent-blue-bg: #172554;
+      --accent-amber: #fbbf24;
+      --accent-amber-bg: #422006;
+      --ring: #41C999;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+      --shadow-xl: 0 24px 60px rgba(0,0,0,0.6);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-height) + 24px); }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ── Reading Progress Bar ── */
+    .reading-progress {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      height: 2px;
+      background: var(--primary);
+      z-index: 101;
+      transition: width 80ms linear;
+      width: 0;
+      display: none;
+    }
+    .reading-progress.visible { display: block; }
+
+    /* ── Header ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      background: rgba(255,255,255,0.88);
+    }
+    [data-theme="dark"] .header { background: rgba(14,18,24,0.9); }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .logo-link svg { flex-shrink: 0; }
+    [data-theme="dark"] .logo-link svg path { fill: #ffffff; }
+    .logo-divider { width: 1px; height: 24px; background: var(--border-secondary); }
+    .logo-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.01em; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-secondary);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .theme-toggle:hover { background: var(--surface-hover); color: var(--text-primary); border-color: var(--border-secondary); }
+    .header-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; background: var(--primary); color: #fff;
+      font-size: 13px; font-weight: 600; border-radius: var(--radius);
+      text-decoration: none; transition: all var(--transition); border: none; cursor: pointer;
+    }
+    .header-cta:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, var(--bg-secondary) 0%, var(--primary-bg) 50%, var(--bg-secondary) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='62' viewBox='0 0 28 31' fill='none'%3E%3Cpath d='M0.878906 6.55992L18.7353 0V5.15423L0.878906 11.7141V6.55992Z' fill='%23101828'/%3E%3Cpath d='M0.878906 14.7601L18.7353 8.20013V13.3544L0.878906 19.9143V14.7601Z' fill='%23101828'/%3E%3Cpath d='M0.878906 22.9602L18.7353 16.4003V21.5545L0.878906 28.1144V22.9602Z' fill='%23101828'/%3E%3Cpath d='M18.7344 5.15442L27.6626 8.90295V14.0572L18.7344 10.3086V5.15442Z' fill='%23101828'/%3E%3Cpath d='M18.7344 13.3546L27.6626 17.1031V22.2574L18.7344 18.5088V13.3546Z' fill='%23101828'/%3E%3Cpath d='M18.7344 21.5547L27.6626 25.3032V30.4574L18.7344 26.7089V21.5547Z' fill='%23101828'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 56px 62px;
+      pointer-events: none;
+    }
+    [data-theme="dark"] .hero-pattern {
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='62' viewBox='0 0 28 31' fill='none'%3E%3Cpath d='M0.878906 6.55992L18.7353 0V5.15423L0.878906 11.7141V6.55992Z' fill='%23ffffff'/%3E%3Cpath d='M0.878906 14.7601L18.7353 8.20013V13.3544L0.878906 19.9143V14.7601Z' fill='%23ffffff'/%3E%3Cpath d='M0.878906 22.9602L18.7353 16.4003V21.5545L0.878906 28.1144V22.9602Z' fill='%23ffffff'/%3E%3Cpath d='M18.7344 5.15442L27.6626 8.90295V14.0572L18.7344 10.3086V5.15442Z' fill='%23ffffff'/%3E%3Cpath d='M18.7344 13.3546L27.6626 17.1031V22.2574L18.7344 18.5088V13.3546Z' fill='%23ffffff'/%3E%3Cpath d='M18.7344 21.5547L27.6626 25.3032V30.4574L18.7344 26.7089V21.5547Z' fill='%23ffffff'/%3E%3C/svg%3E");
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; background: var(--primary-lighter); color: var(--primary-dark);
+      font-size: 12px; font-weight: 600; border-radius: 100px;
+      margin-bottom: 20px; letter-spacing: 0.02em; text-transform: uppercase;
+    }
+    [data-theme="dark"] .hero-badge { color: var(--primary-light); }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px;
+    }
+    .hero p {
+      font-size: clamp(15px, 2vw, 17px); color: var(--text-secondary);
+      max-width: 560px; margin: 0 auto 28px; line-height: 1.65;
+    }
+
+    /* ── Search ── */
+    .search-container { max-width: 600px; margin: 0 auto; position: relative; }
+    .search-icon {
+      position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+      color: var(--text-tertiary); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 15px 52px 15px 50px; font-size: 15px; font-family: inherit;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); color: var(--text-primary); outline: none;
+      transition: all var(--transition); box-shadow: var(--shadow-md);
+    }
+    .search-input::placeholder { color: var(--text-tertiary); }
+    .search-input:focus { border-color: var(--primary); box-shadow: var(--shadow-md), 0 0 0 3px rgba(18,188,127,0.12); }
+    .search-shortcut {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .search-shortcut kbd {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 24px; min-width: 24px; padding: 0 6px; font-size: 11px;
+      font-family: inherit; font-weight: 500; color: var(--text-tertiary);
+      background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 5px;
+    }
+    .search-clear {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 6px; border: none;
+      background: var(--bg-tertiary); color: var(--text-secondary);
+      cursor: pointer; display: none; align-items: center; justify-content: center;
+      font-size: 14px; transition: all var(--transition);
+    }
+    .search-clear:hover { background: var(--border-secondary); color: var(--text-primary); }
+
+    /* ── Command Palette Search Results ── */
+    .cmd-results {
+      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      max-height: 420px; overflow-y: auto; display: none; z-index: 50;
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .cmd-results::-webkit-scrollbar { width: 4px; }
+    .cmd-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .cmd-results.open { display: block; }
+    .cmd-results-header {
+      padding: 10px 16px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-tertiary); border-bottom: 1px solid var(--border);
+    }
+    .cmd-result-item {
+      display: flex; gap: 12px; padding: 12px 16px;
+      cursor: pointer; transition: background var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+    .cmd-result-item:last-child { border-bottom: none; }
+    .cmd-result-item:hover, .cmd-result-item.focused { background: var(--surface-hover); }
+    .cmd-result-item .result-num {
+      flex-shrink: 0; width: 28px; height: 28px; border-radius: 6px;
+      background: var(--bg-tertiary); display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+    .cmd-result-item:hover .result-num { background: var(--primary-lighter); color: var(--primary); }
+    .cmd-result-info { flex: 1; min-width: 0; }
+    .cmd-result-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .cmd-result-title mark { background: rgba(18,188,127,0.2); color: inherit; border-radius: 2px; padding: 0 1px; }
+    .cmd-result-snippet {
+      font-size: 12px; color: var(--text-tertiary); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .cmd-result-snippet mark { background: rgba(18,188,127,0.15); color: var(--text-secondary); border-radius: 2px; padding: 0 1px; }
+    .cmd-result-badge {
+      display: inline-flex; padding: 2px 7px; font-size: 10px; font-weight: 600;
+      border-radius: 100px; margin-left: 8px; vertical-align: middle;
+    }
+    .cmd-no-results { padding: 32px 16px; text-align: center; color: var(--text-tertiary); font-size: 14px; }
+
+    /* ── Popular Articles Row ── */
+    .popular-row {
+      display: flex; justify-content: center; gap: 8px;
+      margin-top: 24px; flex-wrap: wrap;
+    }
+    .popular-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 7px 14px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 100px; font-size: 12px; font-weight: 500;
+      color: var(--text-secondary); cursor: pointer; transition: all var(--transition);
+      text-decoration: none;
+    }
+    .popular-chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-bg); }
+    .popular-chip svg { flex-shrink: 0; }
+
+    /* ── Main Layout ── */
+    .main-content {
+      max-width: 1400px; margin: 0 auto; padding: 48px 24px 0;
+      display: grid; grid-template-columns: 250px 1fr; gap: 48px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky; top: calc(var(--header-height) + 24px);
+      max-height: calc(100vh - var(--header-height) - 48px);
+      overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .sidebar-section { margin-bottom: 24px; }
+    .sidebar-section-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-tertiary); padding: 0 12px; margin-bottom: 4px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      text-decoration: none; border-radius: var(--radius);
+      transition: all var(--transition); line-height: 1.4;
+    }
+    .sidebar-link:hover { background: var(--surface-hover); color: var(--text-primary); }
+    .sidebar-link.active { background: var(--primary-bg); color: var(--primary); font-weight: 600; }
+    .sidebar-link .link-number {
+      flex-shrink: 0; width: 20px; height: 20px; border-radius: 5px;
+      background: var(--bg-tertiary); display: flex; align-items: center;
+      justify-content: center; font-size: 10px; font-weight: 700; color: var(--text-tertiary);
+    }
+    .sidebar-link.active .link-number { background: var(--primary-lighter); color: var(--primary); }
+
+    /* ── Category Grid ── */
+    .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 40px; }
+    .category-card {
+      padding: 24px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); cursor: pointer; transition: all 250ms ease;
+      text-decoration: none; color: inherit; position: relative; overflow: hidden;
+    }
+    .category-card::before {
+      content: ''; position: absolute; inset: -1px; border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      opacity: 0; transition: opacity 250ms ease; z-index: 0;
+    }
+    .category-card:hover::before { opacity: 1; }
+    .category-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .category-card > * { position: relative; z-index: 1; }
+    .category-card:hover > * { position: relative; z-index: 1; }
+    .category-card::after {
+      content: ''; position: absolute; inset: 1px; border-radius: calc(var(--radius-xl) - 1px);
+      background: var(--surface); z-index: 0; transition: all 250ms ease;
+    }
+    .category-card:hover::after { inset: 1px; }
+    .category-card > * { position: relative; z-index: 2; }
+    .category-icon {
+      width: 40px; height: 40px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+    }
+    .category-icon.gs { background: #dbeafe; color: #2563eb; }
+    .category-icon.ud { background: var(--primary-lighter); color: var(--primary-dark); }
+    .category-icon.ts { background: #fef3c7; color: #d97706; }
+    .category-icon.rr { background: #ede9fe; color: #7c3aed; }
+    .category-icon.rf { background: #fce7f3; color: #db2777; }
+    [data-theme="dark"] .category-icon.gs { background: #1e3a5f; color: #60a5fa; }
+    [data-theme="dark"] .category-icon.ud { background: #0d2a1f; color: #41C999; }
+    [data-theme="dark"] .category-icon.ts { background: #422006; color: #fbbf24; }
+    [data-theme="dark"] .category-icon.rr { background: #2e1065; color: #a78bfa; }
+    [data-theme="dark"] .category-icon.rf { background: #4a1942; color: #f472b6; }
+    .category-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .category-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .category-card .article-count {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 12px; font-size: 12px; font-weight: 600; color: var(--primary);
+    }
+
+    /* ── Article List ── */
+    .article-list { margin-bottom: 40px; }
+    .article-list-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .article-list-header h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+    .article-list-header .count-badge {
+      font-size: 11px; font-weight: 700; padding: 2px 8px;
+      border-radius: 100px; background: var(--bg-tertiary); color: var(--text-tertiary);
+    }
+    .article-list-item {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); margin-bottom: 6px; cursor: pointer;
+      transition: all var(--transition); text-decoration: none; color: inherit;
+    }
+    .article-list-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); transform: translateX(2px); }
+    .article-list-item .item-number {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: var(--radius);
+      background: var(--bg-tertiary); display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+    }
+    .article-list-item:hover .item-number { background: var(--primary-lighter); color: var(--primary); }
+    .article-list-item .item-content { flex: 1; min-width: 0; }
+    .article-list-item .item-title { font-size: 14px; font-weight: 600; margin-bottom: 1px; }
+    .article-list-item .item-preview {
+      font-size: 12px; color: var(--text-tertiary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .article-list-item .item-arrow { flex-shrink: 0; color: var(--text-tertiary); transition: all var(--transition); }
+    .article-list-item:hover .item-arrow { color: var(--primary); transform: translateX(3px); }
+
+    /* ── Section Divider ── */
+    .section-divider {
+      height: 1px; background: var(--border);
+      margin: 4px 0 36px;
+      position: relative;
+    }
+    .section-divider::after {
+      content: '';
+      position: absolute; left: 0; top: 0;
+      width: 48px; height: 1px;
+      background: var(--primary);
+    }
+
+    /* ── Article View ── */
+    .article-view { display: none; }
+    .article-view.active { display: block; }
+    .article-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 40px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .article-breadcrumb { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 13px; }
+    .article-breadcrumb a { color: var(--text-tertiary); text-decoration: none; transition: color var(--transition); }
+    .article-breadcrumb a:hover { color: var(--primary); }
+    .article-breadcrumb .sep { color: var(--border-secondary); }
+    .article-breadcrumb .current { color: var(--text-secondary); font-weight: 500; }
+
+    .article-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .article-category-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; font-size: 11px; font-weight: 600;
+      border-radius: 100px; letter-spacing: 0.02em;
+    }
+    .badge-gs { background: #dbeafe; color: #2563eb; }
+    .badge-ud { background: var(--primary-lighter); color: var(--primary-dark); }
+    .badge-ts { background: #fef3c7; color: #d97706; }
+    .badge-rr { background: #ede9fe; color: #7c3aed; }
+    .badge-rf { background: #fce7f3; color: #db2777; }
+    [data-theme="dark"] .badge-gs { background: #1e3a5f; color: #60a5fa; }
+    [data-theme="dark"] .badge-ud { background: #0d2a1f; color: #41C999; }
+    [data-theme="dark"] .badge-ts { background: #422006; color: #fbbf24; }
+    [data-theme="dark"] .badge-rr { background: #2e1065; color: #a78bfa; }
+    [data-theme="dark"] .badge-rf { background: #4a1942; color: #f472b6; }
+
+    .reading-time, .updated-date {
+      font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 4px;
+    }
+    .meta-sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border-secondary); }
+
+    .article-title {
+      font-size: clamp(24px, 3vw, 30px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 8px;
+    }
+    .article-question {
+      font-size: 16px; color: var(--text-secondary); margin-bottom: 32px;
+      line-height: 1.55; font-style: italic;
+    }
+    .article-body { max-width: 720px; }
+    .article-body h3 {
+      font-size: 18px; font-weight: 700; margin: 32px 0 10px;
+      letter-spacing: -0.02em; color: var(--text-primary);
+      scroll-margin-top: calc(var(--header-height) + 24px);
+    }
+    .article-body h4 { font-size: 15px; font-weight: 700; margin: 20px 0 8px; color: var(--text-primary); }
+    .article-body p { font-size: 15px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 14px; }
+    .article-body ul, .article-body ol { margin: 0 0 14px 0; padding-left: 22px; }
+    .article-body li { font-size: 15px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 4px; }
+    .article-body li strong, .article-body strong { color: var(--text-primary); font-weight: 600; }
+
+    .formula-block {
+      margin: 14px 0; padding: 12px 18px; background: var(--bg-secondary);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;
+      color: var(--text-primary); font-weight: 500;
+    }
+
+    /* ── Callout System (4 types) ── */
+    .callout {
+      margin: 20px 0; padding: 16px 18px; border-radius: var(--radius-lg);
+      display: flex; gap: 12px; font-size: 14px; line-height: 1.65;
+      border-left: 3px solid;
+    }
+    .callout .callout-icon {
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .callout .callout-icon svg { width: 13px; height: 13px; }
+    .callout .callout-content { flex: 1; }
+    .callout .callout-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+    .callout p { margin-bottom: 0; font-size: 14px; }
+    .callout p + p { margin-top: 6px; }
+    .callout strong { color: inherit; }
+
+    .callout-tip {
+      background: var(--primary-bg); border-color: var(--primary); color: var(--text-secondary);
+    }
+    .callout-tip .callout-icon { background: var(--primary); color: #fff; }
+    .callout-tip .callout-label { color: var(--primary-dark); }
+    [data-theme="dark"] .callout-tip .callout-label { color: var(--primary-light); }
+
+    .callout-note {
+      background: var(--accent-blue-bg); border-color: var(--accent-blue); color: var(--text-secondary);
+    }
+    .callout-note .callout-icon { background: var(--accent-blue); color: #fff; }
+    .callout-note .callout-label { color: var(--accent-blue); }
+
+    .callout-important {
+      background: var(--accent-amber-bg); border-color: var(--accent-amber); color: var(--text-secondary);
+    }
+    .callout-important .callout-icon { background: var(--accent-amber); color: #fff; }
+    .callout-important .callout-label { color: var(--accent-amber); }
+
+    .callout-action {
+      background: var(--primary-bg); border-color: var(--primary); color: var(--text-secondary);
+    }
+    .callout-action .callout-icon { background: var(--primary); color: #fff; }
+    .callout-action .callout-label { color: var(--primary-dark); }
+    [data-theme="dark"] .callout-action .callout-label { color: var(--primary-light); }
+
+    /* ── Interpretation Table ── */
+    .interpretation-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+    .interpretation-table th {
+      text-align: left; padding: 8px 12px; font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-tertiary);
+      background: var(--bg-secondary); border-bottom: 1px solid var(--border);
+    }
+    .interpretation-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); line-height: 1.4; }
+    .interpretation-table .range-badge { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+    .range-excellent { background: #dcfce7; color: #16a34a; }
+    .range-good { background: #dbeafe; color: #2563eb; }
+    .range-warning { background: #fef3c7; color: #d97706; }
+    .range-danger { background: #fee2e2; color: #dc2626; }
+    [data-theme="dark"] .range-excellent { background: #052e16; color: #4ade80; }
+    [data-theme="dark"] .range-good { background: #172554; color: #60a5fa; }
+    [data-theme="dark"] .range-warning { background: #422006; color: #fbbf24; }
+    [data-theme="dark"] .range-danger { background: #450a0a; color: #f87171; }
+
+    /* ── Article TOC (right side) ── */
+    .article-toc {
+      position: sticky; top: calc(var(--header-height) + 24px);
+      max-height: calc(100vh - var(--header-height) - 48px);
+      overflow-y: auto;
+    }
+    .article-toc-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-tertiary); margin-bottom: 8px;
+    }
+    .toc-link {
+      display: block; padding: 4px 0 4px 12px; font-size: 12px; font-weight: 500;
+      color: var(--text-tertiary); text-decoration: none; line-height: 1.5;
+      border-left: 2px solid var(--border); transition: all var(--transition);
+    }
+    .toc-link:hover { color: var(--text-primary); border-color: var(--border-secondary); }
+    .toc-link.active { color: var(--primary); border-color: var(--primary); font-weight: 600; }
+
+    /* ── Related Articles ── */
+    .related-section { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .related-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; font-size: 11px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .related-card {
+      padding: 14px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition);
+    }
+    .related-card:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .related-card .rc-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .related-card .rc-cat { font-size: 11px; color: var(--text-tertiary); }
+
+    /* ── Feedback ── */
+    .feedback-bar {
+      margin-top: 28px; padding: 20px 24px; background: var(--bg-secondary);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .feedback-bar .fb-question { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .feedback-btns { display: flex; gap: 8px; }
+    .fb-btn {
+      padding: 7px 18px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); font-size: 13px; font-weight: 600; color: var(--text-secondary);
+      cursor: pointer; transition: all var(--transition); font-family: inherit;
+    }
+    .fb-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .fb-btn.selected { background: var(--primary-bg); border-color: var(--primary); color: var(--primary); }
+    .fb-thanks { font-size: 13px; color: var(--primary); font-weight: 600; display: none; }
+
+    /* ── Article Navigation ── */
+    .article-nav { display: flex; gap: 12px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-nav-btn {
+      flex: 1; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition);
+      text-decoration: none; color: inherit;
+    }
+    .article-nav-btn:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+    .article-nav-btn .nav-direction { font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+    .article-nav-btn .nav-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .article-nav-btn.prev { text-align: left; }
+    .article-nav-btn.next { text-align: right; }
+    .article-nav-btn.next .nav-direction { justify-content: flex-end; }
+
+    /* ── Glossary & Formula ── */
+    .glossary-list { margin: 14px 0; }
+    .glossary-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .glossary-item:last-child { border-bottom: none; }
+    .glossary-term { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .glossary-definition { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+    .formula-list { margin: 14px 0; }
+    .formula-item { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: baseline; }
+    .formula-item:last-child { border-bottom: none; }
+    .formula-name { flex-shrink: 0; width: 200px; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .formula-expression {
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px;
+      color: var(--primary-dark); background: var(--primary-bg); padding: 3px 10px; border-radius: 5px;
+    }
+    [data-theme="dark"] .formula-expression { color: var(--primary-light); }
+
+    /* ── Contact CTA Section ── */
+    .contact-section {
+      max-width: 1400px; margin: 0 auto; padding: 0 24px 64px;
+    }
+    .contact-card {
+      background: linear-gradient(135deg, var(--bg-secondary), var(--primary-bg));
+      border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: 48px; display: flex; align-items: center; justify-content: space-between;
+      gap: 32px; position: relative; overflow: hidden;
+    }
+    .contact-card::before {
+      content: ''; position: absolute; right: -40px; bottom: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(18,188,127,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .contact-info { position: relative; }
+    .contact-info h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .contact-info p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; max-width: 500px; }
+    .contact-info .response-time {
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+      font-size: 13px; font-weight: 600; color: var(--primary);
+    }
+    .contact-actions { display: flex; gap: 10px; position: relative; flex-shrink: 0; }
+    .contact-btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; background: var(--primary); color: #fff;
+      font-size: 14px; font-weight: 600; border-radius: var(--radius);
+      text-decoration: none; transition: all var(--transition); border: none; cursor: pointer;
+    }
+    .contact-btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .contact-btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; background: var(--surface); color: var(--text-primary);
+      font-size: 14px; font-weight: 600; border-radius: var(--radius);
+      text-decoration: none; transition: all var(--transition); border: 1px solid var(--border);
+    }
+    .contact-btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ── Footer ── */
+    .site-footer { background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 32px 24px; }
+    .footer-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-left { display: flex; flex-direction: column; gap: 4px; }
+    .footer-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-primary); }
+    .footer-brand svg { width: 90px; height: auto; }
+    [data-theme="dark"] .footer-brand svg path { fill: #ffffff; }
+    .footer-copy { font-size: 12px; color: var(--text-tertiary); }
+    .footer-right { display: flex; align-items: center; gap: 20px; }
+    .footer-link { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color var(--transition); }
+    .footer-link:hover { color: var(--primary); }
+
+    /* ── No Results ── */
+    .no-results { text-align: center; padding: 48px 24px; display: none; }
+    .no-results .no-results-icon {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--bg-tertiary);
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;
+    }
+    .no-results h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .no-results p { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── Mobile ── */
+    .mobile-sidebar-toggle {
+      display: none; position: fixed; bottom: 24px; right: 24px; z-index: 90;
+      width: 48px; height: 48px; border-radius: 50%; background: var(--primary);
+      color: #fff; border: none; box-shadow: var(--shadow-lg); cursor: pointer;
+      align-items: center; justify-content: center;
+    }
+    .mobile-sidebar-overlay { display: none; position: fixed; inset: 0; z-index: 89; background: rgba(0,0,0,0.4); }
+    .back-to-top {
+      position: fixed; bottom: 24px; right: 24px; z-index: 80;
+      width: 36px; height: 36px; border-radius: var(--radius); background: var(--surface);
+      border: 1px solid var(--border); color: var(--text-secondary);
+      display: none; align-items: center; justify-content: center;
+      cursor: pointer; transition: all var(--transition); box-shadow: var(--shadow-md);
+    }
+    .back-to-top:hover { border-color: var(--primary); color: var(--primary); }
+    .back-to-top.visible { display: flex; }
+
+    /* ── Mobile TOC dropdown ── */
+    .mobile-toc {
+      display: none; margin-bottom: 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .mobile-toc-toggle {
+      width: 100%; padding: 12px 16px; background: transparent; border: none;
+      font-family: inherit; font-size: 13px; font-weight: 600; color: var(--text-primary);
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+    }
+    .mobile-toc-toggle svg { transition: transform var(--transition); }
+    .mobile-toc-toggle.open svg { transform: rotate(180deg); }
+    .mobile-toc-list { padding: 0 16px 12px; display: none; }
+    .mobile-toc-list.open { display: block; }
+    .mobile-toc-list a {
+      display: block; padding: 5px 0; font-size: 13px; color: var(--text-secondary);
+      text-decoration: none; transition: color var(--transition);
+    }
+    .mobile-toc-list a:hover { color: var(--primary); }
+
+    @media (max-width: 1200px) {
+      .article-wrapper { grid-template-columns: 1fr; }
+      .article-toc { display: none; }
+      .mobile-toc { display: block; }
+    }
+    @media (max-width: 1024px) {
+      .main-content { grid-template-columns: 1fr; gap: 0; }
+      .sidebar {
+        display: none; position: fixed; bottom: 0; left: 0; right: 0;
+        width: 100%; max-width: 100%; height: 70vh; z-index: 91;
+        background: var(--surface); padding: 8px 16px 24px;
+        border-top: 1px solid var(--border); border-radius: 16px 16px 0 0;
+        box-shadow: var(--shadow-xl); top: auto;
+      }
+      .sidebar::before {
+        content: ''; display: block; width: 36px; height: 4px;
+        background: var(--border-secondary); border-radius: 4px; margin: 8px auto 12px;
+      }
+      .sidebar.mobile-open { display: block; }
+      .mobile-sidebar-toggle { display: flex; }
+      .mobile-sidebar-overlay.open { display: block; }
+      .category-grid { grid-template-columns: 1fr; }
+      .article-nav { flex-direction: column; }
+      .contact-card { flex-direction: column; text-align: center; padding: 32px 24px; }
+      .contact-info p { max-width: 100%; }
+      .contact-actions { justify-content: center; }
+      .formula-item { flex-direction: column; gap: 4px; }
+      .formula-name { width: auto; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-right { flex-wrap: wrap; justify-content: center; }
+      .feedback-bar { flex-direction: column; text-align: center; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding: 40px 16px 32px; }
+      .main-content { padding: 20px 16px 0; }
+      .popular-row { gap: 6px; }
+      .popular-chip { font-size: 11px; padding: 6px 10px; }
+      .header-inner { padding: 0 16px; }
+      .header-cta span { display: none; }
+      .contact-section { padding: 0 16px 48px; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      .header, .sidebar, .mobile-sidebar-toggle, .back-to-top, .hero,
+      .article-nav, .feedback-bar, .related-section, .contact-section,
+      .reading-progress, .article-toc, .mobile-toc { display: none !important; }
+      .main-content { grid-template-columns: 1fr !important; padding: 0 !important; }
+      .article-body { max-width: 100% !important; }
+      .article-wrapper { grid-template-columns: 1fr !important; }
+      body { color: #000; background: #fff; }
+      .callout { break-inside: avoid; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress" id="readingProgress"></div>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="#" class="logo-link" onclick="goHome(); return false;">
+          <svg width="110" height="27" viewBox="0 0 162 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M2.46875 8.61538L25.9202 0V6.76923L2.46875 15.3846V8.61538Z" fill="#101828"/><path d="M2.46875 19.3849L25.9202 10.7695V17.5388L2.46875 26.1541V19.3849Z" fill="#101828"/><path d="M2.46875 30.1544L25.9202 21.5391V28.3083L2.46875 36.9237V30.1544Z" fill="#101828"/><path d="M25.9199 6.76953L37.6456 11.6926V18.4618L25.9199 13.5388V6.76953Z" fill="#101828"/><path d="M25.9199 17.5391L37.6456 22.4621V29.2314L25.9199 24.3083V17.5391Z" fill="#101828"/><path d="M25.9199 28.3086L37.6456 33.2317V40.0009L25.9199 35.0778V28.3086Z" fill="#101828"/><path d="M54.6289 28.616V11.3853H58.9983L64.8241 23.7668C65.1697 24.4806 65.4906 25.1453 65.8115 25.8591L66.7743 23.816L72.5507 11.3853H76.8707V28.616H74.0566V16.3576C74.0566 15.6191 74.0566 14.9299 74.0813 14.216L67.3667 28.616H64.207L57.3937 14.216C57.4184 14.9299 57.4184 15.6437 57.4184 16.3576V28.616H54.6289ZM81.9356 28.616V11.3853H95.5128V13.773H84.7745V18.573H95.0437V20.9606H84.7745V26.2283H95.8831V28.616H81.9356ZM105.026 28.616V13.773H97.9162V11.3853H114.949V13.773H107.865V28.616H105.026ZM118.155 28.616V11.3853H127.585C130.992 11.3853 133.411 12.9606 133.411 15.9391C133.411 18.1545 131.93 19.6068 130.152 20.1483C131.979 20.5176 133.09 21.9699 133.09 24.0376V28.616H130.251V24.5053C130.251 22.3391 129.313 21.4283 126.993 21.4283H120.994V28.616H118.155ZM120.994 19.016H127.165C129.338 19.016 130.498 18.056 130.498 16.3822C130.498 14.7083 129.338 13.773 127.165 13.773H120.994V19.016ZM137.796 28.616V11.3853H140.635V28.616H137.796ZM152.756 29.0099C147.251 29.0099 144.535 26.3022 144.412 22.7576H147.399C147.547 24.8745 149.275 26.6468 152.78 26.6468C156.187 26.6468 157.915 25.4899 157.915 23.8406C157.915 22.3637 156.73 21.7237 154.36 21.3545L150.657 20.813C147.103 20.296 145.103 18.7453 145.103 16.0868C145.103 13.256 147.868 10.9668 152.607 10.9668C157.52 10.9668 160.186 13.3299 160.433 16.5299H157.421C157.273 14.8068 155.743 13.3545 152.533 13.3545C149.522 13.3545 148.016 14.5114 148.016 15.8653C148.016 17.1453 149.003 17.8345 151.472 18.2037L155.348 18.7699C158.902 19.3114 160.902 20.9606 160.902 23.5945C160.902 26.696 158.038 29.0099 152.756 29.0099Z" fill="#101828"/></g><defs><clipPath id="clip0"><rect width="162" height="40" fill="white"/></clipPath></defs></svg>
+          <div class="logo-divider"></div>
+          <span class="logo-label">Support</span>
+        </a>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="mailto:support@metrisenergy.com" class="header-cta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>Contact Support</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Knowledge Base
+      </div>
+      <h1>How can we help?</h1>
+      <p>Guides, troubleshooting, and reference material for managing your solar portfolio on Metris.</p>
+
+      <div class="search-container" id="searchContainer">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search articles, topics, or keywords..." autocomplete="off">
+        <span class="search-shortcut" id="searchShortcut"><kbd>⌘</kbd><kbd>K</kbd></span>
+        <button class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
+        <div class="cmd-results" id="cmdResults"></div>
+      </div>
+
+      <div class="popular-row">
+        <a class="popular-chip" onclick="showArticle(1); return false;" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Getting Started
+        </a>
+        <a class="popular-chip" onclick="showArticle(4); return false;" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Performance Ratio
+        </a>
+        <a class="popular-chip" onclick="showArticle(10); return false;" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Missing Data
+        </a>
+        <a class="popular-chip" onclick="showArticle(14); return false;" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Monthly Report
+        </a>
+        <a class="popular-chip" onclick="showArticle(16); return false;" href="#">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Glossary
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="main-content">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Getting Started</div>
+        <a href="#" class="sidebar-link" data-article="1" onclick="showArticle(1); return false;"><span class="link-number">1</span> Getting started</a>
+        <a href="#" class="sidebar-link" data-article="2" onclick="showArticle(2); return false;"><span class="link-number">2</span> How data flows</a>
+        <a href="#" class="sidebar-link" data-article="3" onclick="showArticle(3); return false;"><span class="link-number">3</span> Site onboarding</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Understanding Your Data</div>
+        <a href="#" class="sidebar-link" data-article="4" onclick="showArticle(4); return false;"><span class="link-number">4</span> Performance Ratio</a>
+        <a href="#" class="sidebar-link" data-article="5" onclick="showArticle(5); return false;"><span class="link-number">5</span> Availability</a>
+        <a href="#" class="sidebar-link" data-article="6" onclick="showArticle(6); return false;"><span class="link-number">6</span> Generation vs export</a>
+        <a href="#" class="sidebar-link" data-article="7" onclick="showArticle(7); return false;"><span class="link-number">7</span> Irradiance</a>
+        <a href="#" class="sidebar-link" data-article="8" onclick="showArticle(8); return false;"><span class="link-number">8</span> Dashboard guide</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Troubleshooting</div>
+        <a href="#" class="sidebar-link" data-article="9" onclick="showArticle(9); return false;"><span class="link-number">9</span> Availability N/A</a>
+        <a href="#" class="sidebar-link" data-article="10" onclick="showArticle(10); return false;"><span class="link-number">10</span> Missing data</a>
+        <a href="#" class="sidebar-link" data-article="11" onclick="showArticle(11); return false;"><span class="link-number">11</span> Export curtailment</a>
+        <a href="#" class="sidebar-link" data-article="12" onclick="showArticle(12); return false;"><span class="link-number">12</span> Exclusions</a>
+        <a href="#" class="sidebar-link" data-article="13" onclick="showArticle(13); return false;"><span class="link-number">13</span> Fault alerts</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Reports & Revenue</div>
+        <a href="#" class="sidebar-link" data-article="14" onclick="showArticle(14); return false;"><span class="link-number">14</span> Monthly report</a>
+        <a href="#" class="sidebar-link" data-article="15" onclick="showArticle(15); return false;"><span class="link-number">15</span> FiT revenue</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Reference</div>
+        <a href="#" class="sidebar-link" data-article="16" onclick="showArticle(16); return false;"><span class="link-number">16</span> Glossary</a>
+        <a href="#" class="sidebar-link" data-article="17" onclick="showArticle(17); return false;"><span class="link-number">17</span> Formulas</a>
+      </div>
+    </aside>
+
+    <main id="contentArea">
+      <div id="landingView">
+        <div class="category-grid" id="categoryGrid">
+          <div class="category-card" onclick="scrollToCategory('gs')"><div class="category-icon gs"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><h3>Getting Started</h3><p>Platform basics, onboarding, and how data flows</p><span class="article-count">3 articles</span></div>
+          <div class="category-card" onclick="scrollToCategory('ud')"><div class="category-icon ud"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div><h3>Understanding Your Data</h3><p>What the numbers mean and what "good" looks like</p><span class="article-count">5 articles</span></div>
+          <div class="category-card" onclick="scrollToCategory('ts')"><div class="category-icon ts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><h3>Troubleshooting</h3><p>Common issues, what causes them, and how to resolve them</p><span class="article-count">5 articles</span></div>
+          <div class="category-card" onclick="scrollToCategory('rr')"><div class="category-icon rr"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><h3>Reports & Revenue</h3><p>Reading your reports and understanding revenue</p><span class="article-count">2 articles</span></div>
+        </div>
+
+        <div id="articleLists">
+          <div class="article-list" id="cat-gs" data-category="gs">
+            <div class="article-list-header"><h2>Getting Started</h2><span class="count-badge">3</span></div>
+            <div class="section-divider"></div>
+            <div class="article-list-item" onclick="showArticle(1)" data-article-id="1"><div class="item-number">1</div><div class="item-content"><div class="item-title">Getting started with Metris</div><div class="item-preview">Your first steps to monitoring your solar portfolio effectively</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(2)" data-article-id="2"><div class="item-number">2</div><div class="item-content"><div class="item-title">How data flows into Metris</div><div class="item-preview">Understanding your data sources, update frequency, and what to expect</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(3)" data-article-id="3"><div class="item-number">3</div><div class="item-content"><div class="item-title">Self-serve site onboarding</div><div class="item-preview">Step-by-step guide to connecting a new site through the platform</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="article-list" id="cat-ud" data-category="ud">
+            <div class="article-list-header"><h2>Understanding Your Data</h2><span class="count-badge">5</span></div>
+            <div class="section-divider"></div>
+            <div class="article-list-item" onclick="showArticle(4)" data-article-id="4"><div class="item-number">4</div><div class="item-content"><div class="item-title">Understanding Performance Ratio (PR)</div><div class="item-preview">The most important metric for solar system efficiency</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(5)" data-article-id="5"><div class="item-number">5</div><div class="item-content"><div class="item-title">Understanding availability</div><div class="item-preview">How Metris measures equipment reliability</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(6)" data-article-id="6"><div class="item-number">6</div><div class="item-content"><div class="item-title">Generation vs export: why the numbers differ</div><div class="item-preview">What your panels produce vs what reaches the grid</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(7)" data-article-id="7"><div class="item-number">7</div><div class="item-content"><div class="item-title">Irradiance: what it is and why it matters</div><div class="item-preview">The foundational measurement for performance comparison</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(8)" data-article-id="8"><div class="item-number">8</div><div class="item-content"><div class="item-title">Understanding your portfolio dashboard</div><div class="item-preview">A guide to every element on your portfolio and site views</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="article-list" id="cat-ts" data-category="ts">
+            <div class="article-list-header"><h2>Troubleshooting</h2><span class="count-badge">5</span></div>
+            <div class="section-divider"></div>
+            <div class="article-list-item" onclick="showArticle(9)" data-article-id="9"><div class="item-number">9</div><div class="item-content"><div class="item-title">Why does availability show "N/A" for some months?</div><div class="item-preview">Understanding the irradiance threshold and winter months</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(10)" data-article-id="10"><div class="item-number">10</div><div class="item-content"><div class="item-title">Why is there missing data for my site?</div><div class="item-preview">Common causes of data gaps and how to resolve them</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(11)" data-article-id="11"><div class="item-number">11</div><div class="item-content"><div class="item-title">How does export curtailment affect my numbers?</div><div class="item-preview">Understanding G100 limits and their impact on metrics</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(12)" data-article-id="12"><div class="item-number">12</div><div class="item-content"><div class="item-title">What are exclusions and how do they affect my data?</div><div class="item-preview">When and why certain periods are removed from calculations</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(13)" data-article-id="13"><div class="item-number">13</div><div class="item-content"><div class="item-title">Understanding fault alerts and what action to take</div><div class="item-preview">How to interpret alerts and resolve issues</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="article-list" id="cat-rr" data-category="rr">
+            <div class="article-list-header"><h2>Reports & Revenue</h2><span class="count-badge">2</span></div>
+            <div class="section-divider"></div>
+            <div class="article-list-item" onclick="showArticle(14)" data-article-id="14"><div class="item-number">14</div><div class="item-content"><div class="item-title">How to read your monthly performance report</div><div class="item-preview">Understanding the report you share with investors</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(15)" data-article-id="15"><div class="item-number">15</div><div class="item-content"><div class="item-title">Feed-in Tariff revenue and savings explained</div><div class="item-preview">Understanding the three revenue streams for FiT sites</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="article-list" id="cat-rf" data-category="rf">
+            <div class="article-list-header"><h2>Reference</h2><span class="count-badge">2</span></div>
+            <div class="section-divider"></div>
+            <div class="article-list-item" onclick="showArticle(16)" data-article-id="16"><div class="item-number">16</div><div class="item-content"><div class="item-title">Glossary of solar terms</div><div class="item-preview">Term definitions used across the Metris platform</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+            <div class="article-list-item" onclick="showArticle(17)" data-article-id="17"><div class="item-number">17</div><div class="item-content"><div class="item-title">Formula reference sheet</div><div class="item-preview">Quick reference for all Metris calculations</div></div><svg class="item-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+        </div>
+        <div class="no-results" id="noResults"><div class="no-results-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>No results found</h3><p>Try different keywords or browse the categories above</p></div>
+      </div>
+      <div class="article-view" id="articleView"></div>
+    </main>
+  </div>
+
+  <div class="contact-section" id="contactSection">
+    <div class="contact-card">
+      <div class="contact-info">
+        <h3>Still need help?</h3>
+        <p>If you cannot find what you need in the knowledge base, reach out directly. We take every question seriously.</p>
+        <div class="response-time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Average response time: under 6 hours
+        </div>
+      </div>
+      <div class="contact-actions">
+        <a href="mailto:support@metrisenergy.com" class="contact-btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email Support
+        </a>
+        <a href="https://app.metrisenergy.com" class="contact-btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Open Platform
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" onclick="toggleMobileSidebar()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileSidebar()"></div>
+  <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <a href="#" class="footer-brand" onclick="goHome(); return false;">
+          <svg width="90" height="22" viewBox="0 0 162 40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip1)"><path d="M2.46875 8.61538L25.9202 0V6.76923L2.46875 15.3846V8.61538Z" fill="#101828"/><path d="M2.46875 19.3849L25.9202 10.7695V17.5388L2.46875 26.1541V19.3849Z" fill="#101828"/><path d="M2.46875 30.1544L25.9202 21.5391V28.3083L2.46875 36.9237V30.1544Z" fill="#101828"/><path d="M25.9199 6.76953L37.6456 11.6926V18.4618L25.9199 13.5388V6.76953Z" fill="#101828"/><path d="M25.9199 17.5391L37.6456 22.4621V29.2314L25.9199 24.3083V17.5391Z" fill="#101828"/><path d="M25.9199 28.3086L37.6456 33.2317V40.0009L25.9199 35.0778V28.3086Z" fill="#101828"/><path d="M54.6289 28.616V11.3853H58.9983L64.8241 23.7668C65.1697 24.4806 65.4906 25.1453 65.8115 25.8591L66.7743 23.816L72.5507 11.3853H76.8707V28.616H74.0566V16.3576C74.0566 15.6191 74.0566 14.9299 74.0813 14.216L67.3667 28.616H64.207L57.3937 14.216C57.4184 14.9299 57.4184 15.6437 57.4184 16.3576V28.616H54.6289ZM81.9356 28.616V11.3853H95.5128V13.773H84.7745V18.573H95.0437V20.9606H84.7745V26.2283H95.8831V28.616H81.9356ZM105.026 28.616V13.773H97.9162V11.3853H114.949V13.773H107.865V28.616H105.026ZM118.155 28.616V11.3853H127.585C130.992 11.3853 133.411 12.9606 133.411 15.9391C133.411 18.1545 131.93 19.6068 130.152 20.1483C131.979 20.5176 133.09 21.9699 133.09 24.0376V28.616H130.251V24.5053C130.251 22.3391 129.313 21.4283 126.993 21.4283H120.994V28.616H118.155ZM120.994 19.016H127.165C129.338 19.016 130.498 18.056 130.498 16.3822C130.498 14.7083 129.338 13.773 127.165 13.773H120.994V19.016ZM137.796 28.616V11.3853H140.635V28.616H137.796ZM152.756 29.0099C147.251 29.0099 144.535 26.3022 144.412 22.7576H147.399C147.547 24.8745 149.275 26.6468 152.78 26.6468C156.187 26.6468 157.915 25.4899 157.915 23.8406C157.915 22.3637 156.73 21.7237 154.36 21.3545L150.657 20.813C147.103 20.296 145.103 18.7453 145.103 16.0868C145.103 13.256 147.868 10.9668 152.607 10.9668C157.52 10.9668 160.186 13.3299 160.433 16.5299H157.421C157.273 14.8068 155.743 13.3545 152.533 13.3545C149.522 13.3545 148.016 14.5114 148.016 15.8653C148.016 17.1453 149.003 17.8345 151.472 18.2037L155.348 18.7699C158.902 19.3114 160.902 20.9606 160.902 23.5945C160.902 26.696 158.038 29.0099 152.756 29.0099Z" fill="#101828"/></g><defs><clipPath id="clip1"><rect width="162" height="40" fill="white"/></clipPath></defs></svg>
+        </a>
+        <span class="footer-copy">&copy; 2026 Metris Energy. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <a href="https://app.metrisenergy.com" class="footer-link">Platform Login</a>
+        <a href="mailto:support@metrisenergy.com" class="footer-link">support@metrisenergy.com</a>
+        <a href="https://metrisenergy.com" class="footer-link">metrisenergy.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/knowledge-hub-v2-data@latest/data.js" onerror=""></script>
+  <script>
+    const SVG_TIP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+    const SVG_NOTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+    const SVG_IMPORTANT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    const SVG_ACTION = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>';
+
+    function callout(type, label, text) {
+      const icons = { tip: SVG_TIP, note: SVG_NOTE, important: SVG_IMPORTANT, action: SVG_ACTION };
+      return `<div class="callout callout-${type}"><div class="callout-icon">${icons[type]}</div><div class="callout-content"><div class="callout-label">${label}</div><p>${text}</p></div></div>`;
+    }
+
+    const articles = {
+      1:{title:"Getting started with Metris",question:"What should I do after logging in for the first time?",category:"Getting Started",categorySlug:"gs",updated:"Feb 2026",related:[2,4,8],body:`<h3>Welcome to Metris</h3><p>Metris turns raw sensor data from your solar sites into operational intelligence. Rather than logging into multiple manufacturer portals and reconciling spreadsheets, you get a single view of your entire portfolio with automated fault detection, performance benchmarking, and investor-grade reporting.</p><h3>Your portfolio dashboard</h3><p>After logging in, you land on your portfolio dashboard. This shows all your sites at a glance with their current status. Each site has a colour-coded indicator:</p><ul><li><strong>Green (Active):</strong> Site operating normally</li><li><strong>Orange (Anomaly):</strong> Site showing unusual patterns that may need investigation</li><li><strong>Red (Alert):</strong> Active alert requiring action</li></ul><p>The dashboard also shows portfolio-level metrics: total generation, weighted Performance Ratio, and overall availability, aggregated across all sites for the selected time period.</p><h3>Navigating a site view</h3><p>Click any site to see its detailed view with four key sections:</p><ul><li><strong>Performance card:</strong> Current PR, generation figures, and revenue estimates</li><li><strong>Timeline:</strong> Historical performance with interactive charts</li><li><strong>Equipment:</strong> All inverters and meters with individual status</li><li><strong>Alerts:</strong> Any active or recent issues</li></ul><h3>Checking alerts</h3><p>The Alerts tab shows issues across your portfolio, sorted by estimated revenue impact. A site losing &pound;2,500 per day appears above one losing &pound;100 per day.</p>${callout('tip','Tip','Set up email notifications for high-priority alerts so you never miss critical issues. Ask your account manager to configure this for you.')}<h3>Creating O&amp;M tickets</h3><ol><li>Click "Create Ticket" from any alert or site view</li><li>Add details about the issue (the alert context is pre-filled)</li><li>Assign to your O&amp;M contractor</li><li>Track progress in the Tickets tab</li></ol><h3>Running reports</h3><p>Go to Reports to generate performance summaries. You can create one-off reports for any date range or schedule monthly reports automatically.</p>${callout('action','Recommended Action','Spend 15 minutes exploring the dashboard. Click into two or three sites to get familiar with the layout. If anything looks unexpected, your account manager is here to help.')}`},
+      2:{title:"How data flows into Metris",question:"Where does my data come from and how often does it update?",category:"Getting Started",categorySlug:"gs",updated:"Feb 2026",related:[1,3,10],body:`<h3>The three data sources</h3><p>Metris aggregates data from three independent sources to give you a complete picture of each site.</p><p><strong>Inverter monitoring systems</strong> are the primary source of generation data. We connect to manufacturer portals (SolarEdge, Huawei, Solis, GoodWe, SMA, and others) via their APIs.</p><p><strong>Export meters</strong> provide billing-grade data. For sites with half-hourly meters, we pull readings from your supplier or metering agent. This is the data used for revenue calculations.</p><p><strong>Weather data</strong> comes from SolarGIS, a satellite-based service that measures solar radiation specific to your site's exact location, orientation, and tilt angle.</p><h3>How often data updates</h3><ul><li><strong>Inverter data:</strong> Every 15 to 60 minutes, depending on the manufacturer</li><li><strong>Meter data:</strong> Daily (half-hourly readings typically arrive the next day)</li><li><strong>Weather data:</strong> Hourly</li><li><strong>Alerts:</strong> Checked continuously, triggered within minutes</li></ul>${callout('note','Note','There is always a small delay between real-world events and data appearing in Metris. If an inverter goes offline at 2pm, you might not see it reflected until 2:15 to 2:30pm. This is normal.')}<h3>Data quality checks</h3><p>Metris automatically flags potential data quality issues including missing readings, values outside expected ranges, mismatches between generation and export, and timestamp inconsistencies.</p><h3>When data sources disagree</h3><p>Metris follows a hierarchy: fiscal meter data takes priority for billing, inverter data takes priority for equipment health monitoring, and weather data provides the independent baseline for performance calculations.</p>${callout('action','Recommended Action','If you are adding new sites, make sure monitoring is fully operational and reporting to the manufacturer portal before requesting Metris integration.')}`},
+      3:{title:"Self-serve site onboarding",question:"How do I add a new site to Metris myself?",category:"Getting Started",categorySlug:"gs",updated:"Feb 2026",related:[1,2,10],body:`<h3>Before you start</h3><p>Make sure the following are in place:</p><ul><li>The inverter monitoring system is installed and reporting data to the manufacturer's portal</li><li>You have the API credentials or portal login details</li><li>You know the site's installed capacity (kWp), location, and panel orientation</li></ul><h3>Adding a new site</h3><ol><li>Navigate to <strong>Platform &rarr; Sites &rarr; Add new site</strong></li><li>Enter site details: name, address, installed capacity, and panel configuration</li><li>Select the inverter manufacturer and enter the API credentials</li><li>Click <strong>Publish</strong> to create the site</li></ol><p>Once published, Metris connects to the monitoring system and begins pulling data. Historical data is backfilled where the manufacturer's API supports it.</p><h3>What happens next</h3><ul><li>Confirms the API connection is working</li><li>Verifies data is flowing for each piece of equipment</li><li>Sets up weather data for the site's location</li><li>Configures default performance targets</li></ul><h3>Common onboarding issues</h3><p><strong>Wrong credentials:</strong> Double-check the API key matches exactly what is in the manufacturer portal. Some systems use a separate API account.</p><p><strong>Equipment not reporting:</strong> Confirm data appears in the manufacturer portal first.</p><p><strong>Missing site details:</strong> Capacity and location are required for PR calculations.</p>${callout('action','Recommended Action','If you run into issues during onboarding, contact your account manager with the site name, manufacturer, and a description of what you are seeing. We can usually resolve connection issues within 24 hours.')}`},
+      4:{title:"Understanding Performance Ratio (PR)",question:'What is PR, how do we calculate it, and what is considered "good"?',category:"Understanding Your Data",categorySlug:"ud",updated:"Feb 2026",related:[5,7,12],body:`<h3>What Performance Ratio tells you</h3><p>Performance Ratio answers a simple question: given the amount of sunlight that hit your panels, how much of that energy did your system actually capture?</p><p>It is expressed as a percentage. If your PR is 80%, your system captured 80% of the energy it theoretically could have produced. The remaining 20% is lost to real-world factors like temperature, cable resistance, inverter efficiency, shading, and soiling.</p><p>PR is the single best metric for comparing solar sites because it strips out the variable that differs most between them: weather.</p><h3>How we calculate it</h3><p>Metris supports two methodologies. Your account will be configured to use whichever method your contracts specify.</p><h4>Standard PR</h4><div class="formula-block">Standard PR = Actual Generation &divide; Expected Generation (SolarGIS)</div><p>Expected generation from SolarGIS already factors in losses from temperature, shading, module degradation, inverter efficiency, and soiling. Target PR is constant year-round and typically set above 90%.</p><h4>Ideal PR</h4><div class="formula-block">Ideal PR = Actual Generation &divide; (GTI &times; Array Capacity)</div><p>GTI multiplied by capacity gives the theoretical maximum output. Target PR varies by month and is typically below 90%.</p>${callout('note','Which method is right for me?','Check your PPA or investment documentation. Standard PR is more intuitive for day-to-day monitoring. Ideal PR is common in contractual settings.')}<h3>Technical PR vs Contractual PR</h3><p><strong>Technical PR</strong> includes all intervals with no exclusions. Useful for O&amp;M contractors.</p><p><strong>Contractual PR</strong> removes exclusion periods from both numerator and denominator. Used for PPA compliance and investor reporting.</p>${callout('important','Interpreting the gap','If your Technical PR is 75% but Contractual PR is 88%, significant excluded events occurred. While PPA guarantees are being met, the site experienced substantial downtime from external factors.')}<h3>What is a "good" PR?</h3><table class="interpretation-table"><thead><tr><th>Range</th><th>Rating</th><th>Interpretation</th></tr></thead><tbody><tr><td><span class="range-badge range-excellent">90%+</span></td><td>Excellent</td><td>System performing close to expectations</td></tr><tr><td><span class="range-badge range-good">80&ndash;90%</span></td><td>Typical</td><td>Well-maintained commercial rooftop systems in the UK</td></tr><tr><td><span class="range-badge range-warning">70&ndash;80%</span></td><td>Below expectations</td><td>Worth investigating</td></tr><tr><td><span class="range-badge range-danger">Below 70%</span></td><td>Underperforming</td><td>Requires immediate attention</td></tr></tbody></table>${callout('note','Seasonal note','PR naturally varies with seasons. Summer PR is typically lower than winter because panels lose efficiency as they heat up. Compare against the same month in previous years.')}<h3>Why PR might look unexpected</h3><ul><li><strong>Shading:</strong> Trees, buildings, or equipment casting shadows</li><li><strong>Soiling:</strong> Dirty panels reduce output without triggering alerts</li><li><strong>Capacity mismatch:</strong> Rated capacity in Metris differs from installed</li><li><strong>Curtailment:</strong> Export limits reduce actual output (see Article 11)</li><li><strong>Data quality:</strong> Missing data from one inverter pulls down the whole site</li></ul>${callout('action','Recommended Action','If PR drops suddenly or is consistently below target for two or more consecutive months, raise a ticket with your O&amp;M provider. Include the affected period and any coinciding alerts.')}`},
+      5:{title:"Understanding availability",question:"What does availability measure and how should I interpret it?",category:"Understanding Your Data",categorySlug:"ud",updated:"Feb 2026",related:[4,9,13],body:`<h3>What availability tells you</h3><p>Availability answers: when conditions were right for generation, did your inverters actually produce power? It focuses purely on whether hardware did its job, making it the key metric for equipment reliability.</p><h3>The formula</h3><div class="formula-block">Availability = Time with energy output &divide; (Total test time &minus; Excluded downtime)</div><ul><li><strong>Time with energy output:</strong> Intervals where irradiance &gt; 100 W/m&sup2; AND inverter reported generation &gt; 0 kWh</li><li><strong>Total test time:</strong> All intervals where irradiance exceeded 100 W/m&sup2;</li><li><strong>Excluded downtime:</strong> Grid issues, DNO limits, force majeure, planned maintenance</li></ul><h3>The 100 W/m&sup2; threshold</h3><p>Below 100 W/m&sup2;, conditions are too weak to fairly expect generation. This threshold ensures equipment is never penalised for poor weather conditions.</p><h3>How we track individual inverters</h3><p>Each inverter is tracked independently. If a site has ten inverters and one fails for a day, availability is roughly 90%, not 0%. One underperformer shows up proportionally.</p><h3>Worked example</h3><p>Site with 10 inverters on a January day. Irradiance exceeds 100 W/m&sup2; for 32 of 40 potential intervals:</p><ul><li><strong>Denominator:</strong> 32 intervals &times; 10 inverters = 320 possible production events</li><li><strong>Numerator:</strong> 304 instances where an inverter reported production</li><li><strong>Availability:</strong> 304 &divide; 320 = <strong>95.0%</strong></li></ul><h3>Interpretation guide</h3><table class="interpretation-table"><thead><tr><th>Range</th><th>Rating</th><th>Interpretation</th></tr></thead><tbody><tr><td><span class="range-badge range-excellent">95%+</span></td><td>Healthy</td><td>Equipment running well. Minor data gaps are normal.</td></tr><tr><td><span class="range-badge range-good">90&ndash;95%</span></td><td>Investigate</td><td>Usually communication problems or intermittent faults.</td></tr><tr><td><span class="range-badge range-warning">80&ndash;90%</span></td><td>Attention needed</td><td>Failed inverter, persistent comms issues, or misconfiguration.</td></tr><tr><td><span class="range-badge range-danger">Below 80%</span></td><td>Significant issues</td><td>Major equipment failure or fundamental data issues.</td></tr></tbody></table><h3>Availability vs PR: using both together</h3><p><strong>High availability with low PR</strong> means equipment is running but underperforming. Investigate shading, soiling, degradation, or curtailment.</p><p><strong>Low availability with normal PR</strong> suggests communication issues rather than actual equipment problems.</p>${callout('action','Recommended Action','If availability drops below 90% for a full month, investigate. Start by checking inverter logs for fault codes, then verify communication stability.')}`},
+      6:{title:"Generation vs export: why the numbers differ",question:"Why do my generation and export figures not match?",category:"Understanding Your Data",categorySlug:"ud",updated:"Feb 2026",related:[4,11,15],body:`<h3>The basics</h3><p><strong>Generation</strong> is total electricity produced, measured at the inverter. <strong>Export</strong> is electricity flowing back to the grid, measured at the export meter.</p><div class="formula-block">Export = Generation &minus; On-site Consumption</div><div class="formula-block">Self-Consumption = Generation &minus; Export</div><h3>Why they differ</h3><p><strong>On-site consumption</strong> is the most common reason. If the building uses some solar electricity directly, it never reaches the export meter.</p><p><strong>System losses</strong> account for 1 to 3%. Energy is lost in cables and transformers.</p><p><strong>Curtailment</strong> reduces output at the inverter level to stay within grid limits.</p><p><strong>Measurement accuracy:</strong> Small discrepancies of 1 to 2% between inverters and fiscal meters are expected.</p>${callout('tip','Rule of thumb','Export being 1 to 5% lower than generation is normal for sites with any on-site consumption. Larger or inconsistent discrepancies warrant investigation.')}<h3>Which number should you use?</h3><ul><li><strong>For billing and revenue:</strong> Always use export meter data</li><li><strong>For system health:</strong> Generation data from inverters</li><li><strong>For PR calculations:</strong> Check what your PPA specifies</li></ul>${callout('action','Recommended Action','If export is consistently more than 5% below generation and the site has minimal on-site consumption, investigate potential metering issues or excessive cable losses.')}`},
+      7:{title:"Irradiance: what it is and why it matters",question:"What is irradiance and how does Metris use it?",category:"Understanding Your Data",categorySlug:"ud",updated:"Feb 2026",related:[4,5,8],body:`<h3>Why irradiance matters</h3><p>Irradiance is the amount of solar energy reaching your panels. Without it, you cannot determine whether low generation is caused by equipment problems or simply less sunshine.</p><h3>Two related terms</h3><p><strong>Irradiance</strong> (W/m&sup2;) is instantaneous power per area &mdash; "how bright is the sun right now?"</p><p><strong>Irradiation</strong> (kWh/m&sup2;) is cumulative energy per area over a period &mdash; "how much total sunlight hit the panels today?"</p>${callout('tip','Simple rule','When checking a threshold at a single moment, you use W/m&sup2;. When calculating performance over a period, you use kWh/m&sup2;.')}<h3>Where Metris uses irradiance</h3><ul><li><strong>Performance Ratio:</strong> Calculates expected generation from GTI</li><li><strong>Irradiance-based generation:</strong> GTI &times; Capacity &times; Target PR</li><li><strong>Generation performance chart:</strong> Expected vs actual with confidence bands</li><li><strong>Availability:</strong> 100 W/m&sup2; threshold</li></ul><h3>Global Tilted Irradiance (GTI)</h3><p>GTI accounts for your panels' exact tilt, orientation, and location. Metris sources this from SolarGIS using satellite imagery.</p>${callout('action','Recommended Action','No direct action needed. Understanding irradiance helps you interpret why PR and availability vary by season.')}`},
+      8:{title:"Understanding your portfolio dashboard",question:"What do the charts and metrics on my dashboard actually show?",category:"Understanding Your Data",categorySlug:"ud",updated:"Feb 2026",related:[1,4,14],body:`<h3>Portfolio-level metrics</h3><p><strong>Generation metric</strong> shows total energy generated across your portfolio for the selected period. The delta indicator compares against the previous equivalent period.</p><p><strong>Performance Ratio metric</strong> displays your actual PR and your target PR. The gap tells you how the portfolio is performing.</p><h3>Generation comparison chart</h3><ul><li><strong>Self-consumption</strong> (energy consumed on-site)</li><li><strong>Export</strong> (energy sent to the grid)</li><li><strong>Budget generation</strong> (from financial models)</li><li><strong>Irradiance-based generation</strong> (GTI &times; Capacity &times; Target PR)</li></ul>${callout('tip','Tip','The irradiance-based generation line adjusts for actual weather. If a month had poor sunshine, the line drops accordingly, so you can see whether your actual generation tracked with weather or fell short for other reasons.')}<h3>Site map</h3><p>Geographic view with colour-coded status indicators. Green = normal, orange = anomalous patterns, red = active alert.</p><h3>Solar consumed vs exported</h3><p>The donut chart shows the self-consumption vs export ratio. Self-consumed energy avoids import costs, which are typically higher than export tariff rates.</p><h3>Generation performance chart (site level)</h3><ul><li><strong>Expected generation line</strong> from SolarGIS</li><li><strong>Grey band:</strong> SolarGIS confidence interval (~80% of the time)</li><li><strong>Actual generation dots</strong></li><li><strong>Percentage shown:</strong> The Performance Ratio</li></ul>${callout('action','Recommended Action','Focus on sites where actual generation falls outside the confidence band or where PR is below target. These need investigation first.')}`},
+      9:{title:'Why does availability show "N/A" for some months?',question:'My availability is showing "N/A" in certain months. Is something wrong?',category:"Troubleshooting",categorySlug:"ts",updated:"Feb 2026",related:[5,7],body:`<h3>The short answer</h3><p>"N/A" means there was not enough sunlight to calculate a meaningful availability figure. This typically happens in December and January in the UK.</p><h3>Why this happens</h3><p>Metris only calculates availability when irradiance exceeds 100 W/m&sup2;. In deep UK winter, there may be entire months where irradiance rarely exceeds this threshold.</p>${callout('note','Think of it this way','You would not judge a car\'s reliability by whether it starts at 3am when you are asleep. Similarly, we do not judge solar system availability when there is barely any sun to capture.')}<h3>What you should do</h3><p>Nothing. This is expected behaviour. For year-over-year comparisons, compare the same months (March to March, July to July).</p>${callout('action','Recommended Action','No action required. N/A in winter months is normal and expected.')}`},
+      10:{title:"Why is there missing data for my site?",question:"I can see gaps in my data. What is causing them and how do I fix it?",category:"Troubleshooting",categorySlug:"ts",updated:"Feb 2026",related:[2,3,13],body:`<h3>Where data comes from</h3><p>Metris pulls data from your inverters' monitoring systems via API. If anything disrupts this chain, data gaps appear.</p><h3>Common causes</h3><p><strong>Connectivity issues at site</strong> are the most common cause. The internet connection is down, the router has failed, or a SIM card has expired.</p><p><strong>Monitoring system outages</strong> happen occasionally. Manufacturer platform issues affect all connected sites.</p><p><strong>API credential changes</strong> break the connection silently.</p><p><strong>New equipment not yet configured</strong> in Metris.</p>${callout('tip','Good news','Data is rarely lost permanently. Most monitoring systems store data locally on the inverter and will backfill gaps automatically once connectivity is restored.')}<h3>How to diagnose the issue</h3><p><strong>Step 1:</strong> Check the manufacturer portal. If data is there but not in Metris, the issue is on our integration side.</p><p><strong>Step 2:</strong> Check site connectivity. Verify the router/modem is powered on.</p><p><strong>Step 3:</strong> Contact Metris with the site name and date range affected.</p>${callout('action','Recommended Action','Check the manufacturer portal first. If data is there but not in Metris, contact your account manager with the site name and the date range affected.')}`},
+      11:{title:"How does export curtailment affect my numbers?",question:"My site has a grid export limit. How does this show up in Metris?",category:"Troubleshooting",categorySlug:"ts",updated:"Feb 2026",related:[6,4,12],body:`<h3>What is export curtailment?</h3><p>Some sites have grid connection agreements (like G100) that limit how much power can be exported. When your system could produce more than this limit, the excess is curtailed.</p><h3>How it affects your data</h3><p><strong>PR looks artificially low</strong> because actual output is reduced but expected output is not adjusted.</p><p><strong>Generation and export mismatch grows</strong> on sunny days.</p><h3>Spotting curtailment in your data</h3><ul><li>Export flatlines at a consistent level during peak sun hours</li><li>Generation exceeds export by a wider margin on sunny days vs cloudy days</li><li>PR drops specifically on the sunniest days (opposite of what you would expect)</li></ul>${callout('important','Important','For Metris to handle curtailment properly, your account manager needs to know the export limit from your grid connection agreement. Without this, curtailed output looks identical to underperformance.')}<h3>How Metris handles curtailment</h3><p>For sites with known export limits, Metris can flag when curtailment is likely occurring, calculate adjusted performance, and show estimated lost revenue.</p>${callout('action','Recommended Action','If your site has an export limit not yet reflected in Metris, send your account manager the G100 agreement or export limit value.')}`},
+      12:{title:"What are exclusions and how do they affect my data?",question:'I have heard about "exclusions" in my reports. What are they?',category:"Troubleshooting",categorySlug:"ts",updated:"Feb 2026",related:[4,5,11],body:`<h3>What exclusions do</h3><p>Exclusions remove specific time periods from performance calculations. When a period is excluded, it is removed from both the numerator and denominator of your PR and availability calculations.</p><h3>Why exclusions matter</h3><p>Without exclusions, your performance data would be unfairly penalised for things outside your control. Most PPAs specify which types of events can be excluded.</p><h3>Types of exclusions</h3><ul><li><strong>Grid outages:</strong> DNO takes the grid offline</li><li><strong>Force majeure:</strong> Extreme weather, flooding, etc.</li><li><strong>Contractual curtailment:</strong> G100 or similar agreements</li><li><strong>Planned maintenance:</strong> Scheduled work requiring system offline</li></ul>${callout('important','For investor reports','If your Technical PR is 75% but Contractual PR is 88%, the exclusions account for that 13-point gap. Both numbers are accurate; they just answer different questions.')}<h3>How to view exclusions</h3><p>On any site's performance page, excluded periods appear as shaded regions on the timeline. Click on any exclusion to see the details.</p>${callout('action','Recommended Action','If you notice a period where performance dropped due to an external event and you have documentation, contact your account manager. The sooner exclusions are applied, the more accurate your reporting.')}`},
+      13:{title:"Understanding fault alerts and what action to take",question:"I have received an alert. What does it mean and what should I do?",category:"Troubleshooting",categorySlug:"ts",updated:"Feb 2026",related:[1,5,10],body:`<h3>How alerts work</h3><p>Metris continuously monitors your portfolio. Each alert includes the affected site, the type of issue, when it started, and an estimated daily revenue impact.</p><h3>Alert types</h3><p><strong>Inverter Offline:</strong> The inverter has stopped communicating or reporting production.</p><p><strong>Underperformance:</strong> The site is producing significantly less than expected.</p><p><strong>Communication Loss:</strong> Metris cannot retrieve data from the monitoring system.</p><p><strong>PR dropped X% below baseline:</strong> Site underperforming relative to its historical average.</p>${callout('note','Revenue impact','The estimated daily revenue loss helps you prioritise. Address a &pound;2,500/day alert before a &pound;100/day alert.')}<h3>Alert statuses</h3><p><strong>Active:</strong> Requires action. You can create an O&amp;M ticket directly.</p><p><strong>Silenced:</strong> Acknowledged but not yet resolved.</p><h3>What to do when you receive an alert</h3><ol><li><strong>Step 1:</strong> Click into the alert for full context</li><li><strong>Step 2:</strong> Verify it is genuine (brief glitches resolve within hours)</li><li><strong>Step 3:</strong> For persistent alerts (&gt;24 hours), create an O&amp;M ticket</li><li><strong>Step 4:</strong> Track resolution &mdash; the alert clears automatically</li></ol>${callout('action','Recommended Action','For alerts lasting more than 24 hours, create an O&amp;M ticket. For high-revenue-impact alerts, escalate immediately regardless of duration.')}`},
+      14:{title:"How to read your monthly performance report",question:"What does each section of my monthly report mean?",category:"Reports & Revenue",categorySlug:"rr",updated:"Feb 2026",related:[8,4,5],body:`<h3>Report overview</h3><p>Your monthly report provides a comprehensive view of portfolio performance, designed to meet investor reporting requirements.</p><h3>Executive summary</h3><ul><li><strong>Total generation:</strong> Energy produced this month (MWh)</li><li><strong>Portfolio PR:</strong> Capacity-weighted average Performance Ratio</li><li><strong>Availability:</strong> Portfolio-level equipment reliability</li><li><strong>Revenue estimate:</strong> Projected earnings</li></ul><p>These are compared against the same month last year and against targets.</p><h3>Site-by-site breakdown</h3><p>Each site gets a row showing generation actual vs expected, PR, availability, and active alerts. Sorted by performance deviation.</p>${callout('tip','Tip','If a site shows strong generation but low PR, check capacity or weather data configuration. If high availability but low generation, investigate curtailment or shading.')}<h3>Trend analysis</h3><p>Month-over-month generation comparison, PR trend with seasonal context, and year-to-date performance against targets. Helps spot gradual degradation.</p><h3>Incident log</h3><p>A summary of all alerts, O&amp;M tickets, and maintenance activities. Provides the audit trail investors typically require.</p>${callout('action','Recommended Action','Review your report within the first week of each month. Flag anomalies to your account manager before sharing with investors.')}`},
+      15:{title:"Feed-in Tariff revenue and savings explained",question:"How does revenue work for sites on the Feed-in Tariff?",category:"Reports & Revenue",categorySlug:"rr",updated:"Feb 2026",related:[6,14],body:`<h3>Why FiT sites are special</h3><p>Sites registered under the Feed-in Tariff earn a generation tariff on every kWh produced, regardless of whether energy is used on-site or exported.</p><h3>The three revenue streams</h3><h4>Generation tariff</h4><p>Paid on every kWh generated. The most valuable component for most FiT sites.</p><div class="formula-block">Generation Tariff Revenue = Total Generation (kWh) &times; FiT Generation Rate (p/kWh)</div><h4>Export tariff</h4><p>Paid on electricity sent to the grid. Often "deemed" at 50% of generation if no export meter is installed.</p><div class="formula-block">Export Tariff Revenue = Export (kWh) &times; FiT Export Rate (p/kWh)</div><h4>Self-consumption savings</h4><p>Grid electricity you did not have to buy. Valued at your import electricity rate.</p><div class="formula-block">Self-Consumption Savings = Self-Consumption (kWh) &times; Avoided Import Rate (p/kWh)</div><h3>Total value calculation</h3><div class="formula-block">Total Value = Generation Tariff + Export Tariff + Self-Consumption Savings</div>${callout('note','Tariff rates','FiT rates depend on when the system was registered and installation size. Rates are indexed annually by RPI. Your account manager can confirm exact rates for each site.')}<h3>Tariff rates</h3><p>Your account manager can confirm the exact rates applicable to each of your sites.</p>${callout('action','Recommended Action','If your FiT site data does not show all three revenue streams, confirm with your account manager that tariff rates and deemed export percentage have been configured.')}`},
+      16:{title:"Glossary of solar terms",question:"Term definitions used across the Metris platform",category:"Reference",categorySlug:"rf",updated:"Feb 2026",related:[17,4],body:`<h3>Terms A&ndash;Z</h3><div class="glossary-list"><div class="glossary-item"><div class="glossary-term">Availability</div><div class="glossary-definition">The percentage of time equipment produced power when irradiance conditions were sufficient (above 100 W/m&sup2;).</div></div><div class="glossary-item"><div class="glossary-term">Azimuth</div><div class="glossary-definition">The compass direction your solar panels face, measured in degrees from north.</div></div><div class="glossary-item"><div class="glossary-term">Contractual PR</div><div class="glossary-definition">Performance Ratio calculated with exclusion periods removed. Used for PPA compliance.</div></div><div class="glossary-item"><div class="glossary-term">Curtailment</div><div class="glossary-definition">Intentional reduction of solar output to comply with grid export limits.</div></div><div class="glossary-item"><div class="glossary-term">Deemed export</div><div class="glossary-definition">An assumed percentage of generation (typically 50%) counted as export when no export meter is installed.</div></div><div class="glossary-item"><div class="glossary-term">DNO</div><div class="glossary-definition">Distribution Network Operator. The company responsible for the local electricity grid.</div></div><div class="glossary-item"><div class="glossary-term">Exclusion period</div><div class="glossary-definition">A time period removed from performance calculations because underperformance was caused by external factors.</div></div><div class="glossary-item"><div class="glossary-term">Export</div><div class="glossary-definition">Electricity generated by your solar system that flows back to the grid.</div></div><div class="glossary-item"><div class="glossary-term">Feed-in Tariff (FiT)</div><div class="glossary-definition">A UK government scheme that pays solar system owners for every kWh generated plus exported electricity.</div></div><div class="glossary-item"><div class="glossary-term">Force majeure</div><div class="glossary-definition">Extraordinary events beyond anyone's control that may be excluded from performance calculations.</div></div><div class="glossary-item"><div class="glossary-term">G100</div><div class="glossary-definition">A grid connection agreement that limits the maximum power a site can export.</div></div><div class="glossary-item"><div class="glossary-term">Generation</div><div class="glossary-definition">Total electricity produced by your solar panels, measured at the inverter output.</div></div><div class="glossary-item"><div class="glossary-term">GTI</div><div class="glossary-definition">Global Tilted Irradiance. Solar energy hitting your panels, accounting for tilt and orientation.</div></div><div class="glossary-item"><div class="glossary-term">Ideal PR</div><div class="glossary-definition">PR calculated using raw irradiance multiplied by capacity. Targets vary monthly.</div></div><div class="glossary-item"><div class="glossary-term">Inverter</div><div class="glossary-definition">Equipment that converts DC electricity from solar panels into AC electricity.</div></div><div class="glossary-item"><div class="glossary-term">Irradiance</div><div class="glossary-definition">Instantaneous solar power per unit area, measured in W/m&sup2;.</div></div><div class="glossary-item"><div class="glossary-term">kWp</div><div class="glossary-definition">Kilowatt peak. Rated output of a solar system under Standard Test Conditions.</div></div><div class="glossary-item"><div class="glossary-term">MWh</div><div class="glossary-definition">Megawatt hour. 1,000 kWh. Standard unit for commercial solar generation.</div></div><div class="glossary-item"><div class="glossary-term">O&amp;M</div><div class="glossary-definition">Operations and Maintenance. The contractor responsible for maintaining your equipment.</div></div><div class="glossary-item"><div class="glossary-term">Performance Ratio (PR)</div><div class="glossary-definition">The ratio of actual energy output to expected output, expressed as a percentage.</div></div><div class="glossary-item"><div class="glossary-term">PPA</div><div class="glossary-definition">Power Purchase Agreement. A contract specifying price per kWh and performance guarantees.</div></div><div class="glossary-item"><div class="glossary-term">Self-consumption</div><div class="glossary-definition">Solar electricity generated and used on-site. Calculated as Generation minus Export.</div></div><div class="glossary-item"><div class="glossary-term">SolarGIS</div><div class="glossary-definition">Satellite-based service providing irradiance data specific to each site location.</div></div><div class="glossary-item"><div class="glossary-term">Standard PR</div><div class="glossary-definition">PR using SolarGIS expected generation as the denominator. Target is constant year-round.</div></div><div class="glossary-item"><div class="glossary-term">STC</div><div class="glossary-definition">Standard Test Conditions. 1 kW/m&sup2; irradiance and 25&deg;C cell temperature.</div></div><div class="glossary-item"><div class="glossary-term">Technical PR</div><div class="glossary-definition">PR across all intervals with no exclusions. Shows raw equipment performance.</div></div><div class="glossary-item"><div class="glossary-term">Weighted irradiance</div><div class="glossary-definition">Irradiance averaged across arrays, weighted by capacity.</div></div></div>`},
+      17:{title:"Formula reference sheet",question:"Quick reference for all calculations used in the Metris platform",category:"Reference",categorySlug:"rf",updated:"Feb 2026",related:[16,4],body:`<h3>Performance metrics</h3><div class="formula-list"><div class="formula-item"><div class="formula-name">Availability</div><div class="formula-expression">Time with energy output &divide; (Total test time &minus; Excluded downtime)</div></div><div class="formula-item"><div class="formula-name">Standard PR</div><div class="formula-expression">Actual Generation &divide; Expected Generation (SolarGIS)</div></div><div class="formula-item"><div class="formula-name">Ideal PR</div><div class="formula-expression">Actual Generation &divide; (GTI &times; Array Capacity)</div></div><div class="formula-item"><div class="formula-name">Technical PR</div><div class="formula-expression">Any PR method, all intervals, no exclusions</div></div><div class="formula-item"><div class="formula-name">Contractual PR</div><div class="formula-expression">Any PR method with exclusion periods removed</div></div></div><h3>Energy calculations</h3><div class="formula-list"><div class="formula-item"><div class="formula-name">Irradiance-based generation</div><div class="formula-expression">GTI &times; Capacity &times; Target PR</div></div><div class="formula-item"><div class="formula-name">Weighted irradiance</div><div class="formula-expression">&Sigma;(GTI &times; Array Capacity) &divide; Total Capacity</div></div><div class="formula-item"><div class="formula-name">Export</div><div class="formula-expression">Generation &minus; Consumption</div></div><div class="formula-item"><div class="formula-name">Self-consumption</div><div class="formula-expression">Generation &minus; Export</div></div></div><h3>Revenue calculations</h3><div class="formula-list"><div class="formula-item"><div class="formula-name">FiT total value</div><div class="formula-expression">Generation Tariff + Export Tariff + Self-Consumption Savings</div></div><div class="formula-item"><div class="formula-name">Generation tariff revenue</div><div class="formula-expression">Total Generation (kWh) &times; FiT Rate (p/kWh)</div></div><div class="formula-item"><div class="formula-name">Export tariff revenue</div><div class="formula-expression">Export (kWh) &times; FiT Export Rate (p/kWh)</div></div><div class="formula-item"><div class="formula-name">Self-consumption savings</div><div class="formula-expression">Self-Consumption (kWh) &times; Avoided Import Rate (p/kWh)</div></div></div>`}
+    };
+
+    let currentArticle = null;
+    let tocObserver = null;
+
+    function calcReadTime(html) {
+      const text = html.replace(/<[^>]*>/g, '');
+      const words = text.split(/\s+/).filter(w => w.length > 0).length;
+      return Math.max(1, Math.ceil(words / 220));
+    }
+
+    function showArticle(id) {
+      const a = articles[id];
+      if (!a) return;
+      currentArticle = id;
+      const readMin = calcReadTime(a.body);
+      const prev = articles[id - 1];
+      const next = articles[id + 1];
+
+      let navHtml = '<div class="article-nav">';
+      if (prev) navHtml += `<div class="article-nav-btn prev" onclick="showArticle(${id-1})"><div class="nav-direction">&larr; Previous</div><div class="nav-title">${prev.title}</div></div>`;
+      if (next) navHtml += `<div class="article-nav-btn next" onclick="showArticle(${id+1})"><div class="nav-direction">Next &rarr;</div><div class="nav-title">${next.title}</div></div>`;
+      navHtml += '</div>';
+
+      let relatedHtml = '';
+      if (a.related && a.related.length) {
+        relatedHtml = '<div class="related-section"><div class="related-title">Related Articles</div><div class="related-grid">';
+        a.related.forEach(rid => {
+          const r = articles[rid];
+          if (r) relatedHtml += `<div class="related-card" onclick="showArticle(${rid})"><div class="rc-title">${r.title}</div><div class="rc-cat">${r.category}</div></div>`;
+        });
+        relatedHtml += '</div></div>';
+      }
+
+      const fbState = localStorage.getItem('metris-fb-' + id);
+      let fbHtml = `<div class="feedback-bar" id="feedbackBar">`;
+      if (fbState) {
+        fbHtml += `<span class="fb-question">Was this article helpful?</span><span class="fb-thanks" style="display:inline">Thanks for your feedback</span>`;
+      } else {
+        fbHtml += `<span class="fb-question">Was this article helpful?</span><div class="feedback-btns"><button class="fb-btn" onclick="submitFeedback(${id},'yes',this)">Yes</button><button class="fb-btn" onclick="submitFeedback(${id},'no',this)">No</button></div><span class="fb-thanks" id="fbThanks">Thanks for your feedback</span>`;
+      }
+      fbHtml += '</div>';
+
+      const badgeClass = 'badge-' + a.categorySlug;
+
+      document.getElementById('articleView').innerHTML = `
+        <div class="article-wrapper">
+          <div class="article-main">
+            <div class="article-breadcrumb">
+              <a href="#" onclick="goHome(); return false;">Home</a><span class="sep">/</span>
+              <a href="#" onclick="goHome(); scrollToCategory('${a.categorySlug}'); return false;">${a.category}</a><span class="sep">/</span>
+              <span class="current">Article ${id}</span>
+            </div>
+            <div class="mobile-toc" id="mobileToc"></div>
+            <div class="article-meta">
+              <span class="article-category-badge ${badgeClass}">${a.category}</span>
+              <span class="meta-sep"></span>
+              <span class="reading-time"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${readMin} min read</span>
+              <span class="meta-sep"></span>
+              <span class="updated-date">Updated ${a.updated}</span>
+            </div>
+            <h1 class="article-title">${a.title}</h1>
+            <p class="article-question">${a.question}</p>
+            <div class="article-body" id="articleBody">${a.body}</div>
+            ${relatedHtml}
+            ${fbHtml}
+            ${navHtml}
+          </div>
+          <div class="article-toc" id="articleToc"></div>
+        </div>`;
+
+      document.getElementById('landingView').style.display = 'none';
+      document.getElementById('articleView').classList.add('active');
+      document.getElementById('readingProgress').classList.add('visible');
+
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      const al = document.querySelector(`.sidebar-link[data-article="${id}"]`);
+      if (al) { al.classList.add('active'); al.scrollIntoView({ block: 'nearest' }); }
+
+      buildToc();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeMobileSidebar();
+      closeCmdResults();
+      history.pushState({ article: id }, '', `#article-${id}`);
+    }
+
+    function buildToc() {
+      const body = document.getElementById('articleBody');
+      const toc = document.getElementById('articleToc');
+      const mobileToc = document.getElementById('mobileToc');
+      if (!body || !toc) return;
+      const headings = body.querySelectorAll('h3');
+      if (headings.length < 3) { toc.innerHTML = ''; mobileToc.innerHTML = ''; return; }
+
+      let html = '<div class="article-toc-title">On this page</div>';
+      let mobileLinks = '';
+      headings.forEach((h, i) => {
+        h.id = 'section-' + i;
+        html += `<a href="#section-${i}" class="toc-link" data-toc="${i}">${h.textContent}</a>`;
+        mobileLinks += `<a href="#section-${i}" onclick="toggleMobileTocList()">${h.textContent}</a>`;
+      });
+      toc.innerHTML = html;
+      mobileToc.innerHTML = `<button class="mobile-toc-toggle" onclick="toggleMobileTocList()">On this page <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="mobile-toc-list" id="mobileTocList">${mobileLinks}</div>`;
+
+      if (tocObserver) tocObserver.disconnect();
+      tocObserver = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const idx = e.target.id.replace('section-', '');
+            toc.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+            const active = toc.querySelector(`[data-toc="${idx}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+      headings.forEach(h => tocObserver.observe(h));
+    }
+
+    function toggleMobileTocList() {
+      const list = document.getElementById('mobileTocList');
+      const btn = list.previousElementSibling;
+      list.classList.toggle('open');
+      btn.classList.toggle('open');
+    }
+
+    function submitFeedback(id, val, btn) {
+      localStorage.setItem('metris-fb-' + id, val);
+      const bar = btn.closest('.feedback-bar');
+      bar.querySelector('.feedback-btns').style.display = 'none';
+      bar.querySelector('.fb-thanks').style.display = 'inline';
+    }
+
+    function goHome() {
+      currentArticle = null;
+      document.getElementById('landingView').style.display = 'block';
+      document.getElementById('articleView').classList.remove('active');
+      document.getElementById('articleView').innerHTML = '';
+      document.getElementById('readingProgress').classList.remove('visible');
+      document.getElementById('readingProgress').style.width = '0';
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      closeCmdResults();
+      history.pushState({}, '', window.location.pathname);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToCategory(slug) {
+      goHome();
+      setTimeout(() => {
+        const el = document.getElementById('cat-' + slug);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    // ── Enhanced Search ──
+    const searchInput = document.getElementById('searchInput');
+    const searchShortcut = document.getElementById('searchShortcut');
+    const searchClear = document.getElementById('searchClear');
+    const cmdResults = document.getElementById('cmdResults');
+    let cmdFocusIdx = -1;
+
+    function closeCmdResults() { cmdResults.classList.remove('open'); cmdFocusIdx = -1; }
+
+    function highlightMatch(text, q) {
+      if (!q) return text;
+      const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+      return text.replace(re, '<mark>$1</mark>');
+    }
+
+    function getSnippet(html, q) {
+      const text = html.replace(/<[^>]*>/g, '');
+      const idx = text.toLowerCase().indexOf(q.toLowerCase());
+      if (idx === -1) return '';
+      const start = Math.max(0, idx - 60);
+      const end = Math.min(text.length, idx + q.length + 100);
+      let snippet = (start > 0 ? '...' : '') + text.slice(start, end) + (end < text.length ? '...' : '');
+      return highlightMatch(snippet, q);
+    }
+
+    searchInput.addEventListener('input', function() {
+      const q = this.value.trim();
+      if (q.length > 0) { searchShortcut.style.display = 'none'; searchClear.style.display = 'flex'; }
+      else { searchShortcut.style.display = 'flex'; searchClear.style.display = 'none'; }
+
+      if (q.length < 2) { closeCmdResults(); return; }
+
+      const results = [];
+      Object.keys(articles).forEach(id => {
+        const a = articles[id];
+        const titleLower = a.title.toLowerCase();
+        const bodyText = a.body.replace(/<[^>]*>/g, '').toLowerCase();
+        const ql = q.toLowerCase();
+        let score = 0;
+        if (titleLower.includes(ql)) score += 10;
+        if (a.question.toLowerCase().includes(ql)) score += 5;
+        if (bodyText.includes(ql)) score += 1;
+        if (score > 0) results.push({ id: parseInt(id), score, article: a });
+      });
+      results.sort((a, b) => b.score - a.score);
+
+      if (results.length === 0) {
+        cmdResults.innerHTML = '<div class="cmd-no-results">No articles match your search</div>';
+        cmdResults.classList.add('open');
+        return;
+      }
+
+      let html = `<div class="cmd-results-header">${results.length} result${results.length !== 1 ? 's' : ''}</div>`;
+      results.forEach((r, i) => {
+        const snippet = getSnippet(r.article.body, q);
+        html += `<div class="cmd-result-item${i === 0 ? ' focused' : ''}" data-id="${r.id}" onclick="showArticle(${r.id})">
+          <div class="result-num">${r.id}</div>
+          <div class="cmd-result-info">
+            <div class="cmd-result-title">${highlightMatch(r.article.title, q)} <span class="cmd-result-badge badge-${r.article.categorySlug}">${r.article.category}</span></div>
+            ${snippet ? `<div class="cmd-result-snippet">${snippet}</div>` : ''}
+          </div>
+        </div>`;
+      });
+      cmdResults.innerHTML = html;
+      cmdResults.classList.add('open');
+      cmdFocusIdx = 0;
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+      if (!cmdResults.classList.contains('open')) return;
+      const items = cmdResults.querySelectorAll('.cmd-result-item');
+      if (e.key === 'ArrowDown') { e.preventDefault(); cmdFocusIdx = Math.min(cmdFocusIdx + 1, items.length - 1); updateCmdFocus(items); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); cmdFocusIdx = Math.max(cmdFocusIdx - 1, 0); updateCmdFocus(items); }
+      if (e.key === 'Enter' && items[cmdFocusIdx]) { e.preventDefault(); showArticle(parseInt(items[cmdFocusIdx].dataset.id)); }
+    });
+
+    function updateCmdFocus(items) {
+      items.forEach((it, i) => it.classList.toggle('focused', i === cmdFocusIdx));
+      if (items[cmdFocusIdx]) items[cmdFocusIdx].scrollIntoView({ block: 'nearest' });
+    }
+
+    function clearSearch() {
+      searchInput.value = '';
+      searchShortcut.style.display = 'flex';
+      searchClear.style.display = 'none';
+      closeCmdResults();
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); searchInput.focus(); searchInput.select(); }
+      if (e.key === 'Escape') { searchInput.blur(); clearSearch(); }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('searchContainer').contains(e.target)) closeCmdResults();
+    });
+
+    // ── Theme ──
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('metris-kb-theme', isDark ? 'light' : 'dark');
+      updateThemeIcons();
+    }
+    function updateThemeIcons() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.querySelector('.sun-icon').style.display = isDark ? 'none' : 'block';
+      document.querySelector('.moon-icon').style.display = isDark ? 'block' : 'none';
+    }
+    const saved = localStorage.getItem('metris-kb-theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-theme', 'dark');
+    updateThemeIcons();
+
+    // ── Mobile sidebar ──
+    function toggleMobileSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('mobileSidebarOverlay').classList.toggle('open');
+    }
+    function closeMobileSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('mobileSidebarOverlay').classList.remove('open');
+    }
+
+    // ── Scroll events ──
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('backToTop');
+      btn.classList.toggle('visible', window.scrollY > 400);
+
+      if (currentArticle) {
+        const body = document.getElementById('articleBody');
+        if (body) {
+          const rect = body.getBoundingClientRect();
+          const total = body.scrollHeight;
+          const progress = Math.min(1, Math.max(0, (-rect.top) / (total - window.innerHeight)));
+          document.getElementById('readingProgress').style.width = (progress * 100) + '%';
+        }
+      }
+    });
+
+    // ── History ──
+    window.addEventListener('popstate', function(e) {
+      if (e.state && e.state.article) showArticle(e.state.article);
+      else goHome();
+    });
+    if (window.location.hash.startsWith('#article-')) {
+      const id = parseInt(window.location.hash.replace('#article-', ''));
+      if (articles[id]) showArticle(id);
+    }
+  </script>
+</body>
+</html>
