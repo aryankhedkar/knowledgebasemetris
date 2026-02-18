@@ -784,7 +784,7 @@
     .chat-panel-header {
       padding: 16px 20px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between;
-      background: var(--primary-bg);
+      background: var(--surface);
       border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     }
     .chat-panel-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
@@ -800,7 +800,7 @@
       padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.5;
     }
     .chat-msg.assistant .chat-msg-bubble {
-      background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border);
+      background: var(--surface); color: var(--text-primary); border: 1px solid var(--border);
     }
     .chat-msg.user .chat-msg-bubble { background: var(--primary); color: #fff; }
     .chat-msg-label { font-size: 11px; font-weight: 600; color: var(--text-tertiary); margin-bottom: 4px; }
@@ -808,6 +808,9 @@
     .chat-msg-content { word-break: break-word; }
     .chat-msg-content p { margin: 0 0 8px 0; }
     .chat-msg-content p:last-child { margin-bottom: 0; }
+    .chat-msg-content ol, .chat-msg-content ul { margin: 4px 0 8px 0; padding-left: 20px; }
+    .chat-msg-content li { margin-bottom: 4px; }
+    .chat-msg-content code { background: var(--bg-secondary); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
     .chat-typing { padding: 12px 16px; color: var(--text-tertiary); font-size: 14px; }
     .chat-input-wrap {
       padding: 12px 16px 16px; border-top: 1px solid var(--border);
@@ -1497,7 +1500,8 @@
       const div = document.createElement('div');
       div.className = 'chat-msg ' + role;
       const label = role === 'user' ? 'You' : 'Metris AI';
-      div.innerHTML = '<div class="chat-msg-label">' + label + '</div><div class="chat-msg-bubble"><div class="chat-msg-content">' + (isHtml ? content : escapeHtml(content)) + '</div></div>';
+      const rendered = isHtml ? content : (role === 'assistant' ? renderMarkdown(content) : escapeHtml(content));
+      div.innerHTML = '<div class="chat-msg-label">' + label + '</div><div class="chat-msg-bubble"><div class="chat-msg-content">' + rendered + '</div></div>';
       container.appendChild(div);
       container.scrollTop = container.scrollHeight;
     }
@@ -1506,6 +1510,38 @@
       const div = document.createElement('div');
       div.textContent = s;
       return div.innerHTML.replace(/\n/g, '<br>');
+    }
+
+    function renderMarkdown(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      let html = div.innerHTML;
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+      const lines = html.split('\n');
+      let out = '';
+      let inOl = false;
+      let inUl = false;
+      for (const line of lines) {
+        const olMatch = line.match(/^(\d+)\.\s+(.+)/);
+        const ulMatch = line.match(/^[-*]\s+(.+)/);
+        if (olMatch) {
+          if (!inOl) { if (inUl) { out += '</ul>'; inUl = false; } out += '<ol>'; inOl = true; }
+          out += '<li>' + olMatch[2] + '</li>';
+        } else if (ulMatch) {
+          if (!inUl) { if (inOl) { out += '</ol>'; inOl = false; } out += '<ul>'; inUl = true; }
+          out += '<li>' + ulMatch[1] + '</li>';
+        } else {
+          if (inOl) { out += '</ol>'; inOl = false; }
+          if (inUl) { out += '</ul>'; inUl = false; }
+          if (line.trim() === '') out += '<br>';
+          else out += '<p>' + line + '</p>';
+        }
+      }
+      if (inOl) out += '</ol>';
+      if (inUl) out += '</ul>';
+      return out;
     }
 
     async function sendChatMessage() {
