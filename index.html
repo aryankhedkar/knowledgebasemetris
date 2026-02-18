@@ -573,7 +573,7 @@
 
     /* ── Feedback ── */
     .feedback-bar {
-      margin-top: 28px; padding: 20px 24px; background: var(--bg-secondary);
+      margin-top: 28px; margin-bottom: 8px; padding: 20px 24px; background: var(--bg-secondary);
       border: 1px solid var(--border); border-radius: var(--radius-lg);
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
@@ -589,7 +589,7 @@
     .fb-thanks { font-size: 13px; color: var(--primary); font-weight: 600; display: none; }
 
     /* ── Article Navigation ── */
-    .article-nav { display: flex; gap: 12px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border); }
+    .article-nav { display: flex; gap: 12px; margin-top: 32px; margin-bottom: 24px; padding-top: 28px; border-top: 1px solid var(--border); }
     .article-nav-btn {
       flex: 1; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius-lg); cursor: pointer; transition: all var(--transition);
@@ -620,7 +620,7 @@
 
     /* ── Contact CTA Section ── */
     .contact-section {
-      max-width: 1400px; margin: 0 auto; padding: 0 24px 40px;
+      max-width: 1400px; margin: 0 auto; margin-top: 48px; padding: 0 24px 40px;
     }
     .contact-card {
       background: linear-gradient(135deg, var(--bg-secondary), var(--primary-bg));
@@ -658,7 +658,7 @@
     .contact-btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
 
     /* ── Footer ── */
-    .site-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 32px 24px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0)); }
+    .site-footer { background: var(--bg); border-top: 1px solid var(--border); padding: 32px 24px; padding-right: 200px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0)); }
     .footer-inner {
       max-width: 1400px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
