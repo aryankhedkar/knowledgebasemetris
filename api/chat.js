@@ -1,17 +1,18 @@
 /**
- * Metris AI chat API. Answers questions using only the provided knowledge-base context.
- * Set OPENAI_API_KEY in Vercel (or .env locally) to enable. Without it, returns a friendly fallback.
+ * Metris AI chat API (streaming). Answers questions using only the provided knowledge-base context.
+ * Set OPENAI_API_KEY in Vercel (or .env locally) to enable.
  */
 
 const MAX_CONTEXT_ITEMS = 5;
 const MAX_BODY_LENGTH = 2800;
+const MAX_HISTORY = 10;
 
 function buildSystemPrompt(context) {
   const blocks = (context || [])
     .slice(0, MAX_CONTEXT_ITEMS)
-    .map((item) => {
+    .map((item, i) => {
       const body = (item.body || '').slice(0, MAX_BODY_LENGTH);
-      return `## ${item.title || 'Article'}\n${body}`;
+      return `## [Article ${i + 1}] ${item.title || 'Article'}\n${body}`;
     });
   const refs = blocks.join('\n\n---\n\n');
   return `You are Metris AI, a friendly and knowledgeable support assistant for Metris Energy, a solar asset management platform used by asset managers, O&M providers, and their customers.
@@ -29,42 +30,32 @@ Writing style:
 - Never use the word "actually"
 - Avoid dramatic or exaggerated language. No "incredibly", "absolutely", "game-changing", "revolutionary", etc. Just be straightforward and genuine
 
+Source citations:
+- At the end of your answer, on a new line, add a "Sources:" section listing the article titles you drew from
+- Format each source as: Sources: Article Title 1, Article Title 2
+- Only cite articles you used. If you didn't use any, skip the Sources line
+
 Rules:
 - Answer ONLY from the knowledge base articles provided below. Do not invent or assume information
 - If the answer isn't covered in the articles, be honest: let them know you couldn't find it and suggest they email support@metrisenergy.com or browse the knowledge base for more
 - Never fabricate features, numbers, or processes
+- You have conversation history, so handle follow-up questions naturally
 
 Knowledge base articles:
 
 ${refs || 'No articles were provided.'}`;
 }
 
-async function callOpenAI(apiKey, question, context) {
-  const systemPrompt = buildSystemPrompt(context);
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: question },
-      ],
-      max_tokens: 1024,
-      temperature: 0.5,
-    }),
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(res.status === 429 ? 'Rate limit' : err || res.statusText);
+function buildMessages(systemPrompt, question, history) {
+  const messages = [{ role: 'system', content: systemPrompt }];
+  const recent = (history || []).slice(-MAX_HISTORY);
+  for (const msg of recent) {
+    if (msg.role === 'user' || msg.role === 'assistant') {
+      messages.push({ role: msg.role, content: String(msg.content || '').slice(0, 2000) });
+    }
   }
-  const data = await res.json();
-  const content = data?.choices?.[0]?.message?.content;
-  if (typeof content !== 'string') throw new Error('Invalid response from OpenAI');
-  return content.trim();
+  messages.push({ role: 'user', content: question });
+  return messages;
 }
 
 module.exports = async function handler(req, res) {
@@ -100,18 +91,75 @@ module.exports = async function handler(req, res) {
 
   const question = typeof body.question === 'string' ? body.question.trim() : '';
   const context = Array.isArray(body.context) ? body.context : [];
+  const history = Array.isArray(body.history) ? body.history : [];
 
   if (!question) {
     res.status(400).json({ error: 'Missing question' });
     return;
   }
 
+  const systemPrompt = buildSystemPrompt(context);
+  const messages = buildMessages(systemPrompt, question, history);
+
   try {
-    const reply = await callOpenAI(apiKey, question, context);
-    res.status(200).json({ reply });
+    const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages,
+        max_tokens: 1024,
+        temperature: 0.5,
+        stream: true,
+      }),
+    });
+
+    if (!openaiRes.ok) {
+      const err = await openaiRes.text();
+      console.error('OpenAI error:', openaiRes.status, err);
+      res.status(200).json({
+        reply: 'Sorry, I had trouble answering that. Please try again or contact support@metrisenergy.com.',
+      });
+      return;
+    }
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+
+    const reader = openaiRes.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const payload = line.slice(6).trim();
+        if (payload === '[DONE]') {
+          res.write('data: [DONE]\n\n');
+          break;
+        }
+        try {
+          const parsed = JSON.parse(payload);
+          const token = parsed.choices?.[0]?.delta?.content;
+          if (token) {
+            res.write(`data: ${JSON.stringify({ token })}\n\n`);
+          }
+        } catch (_) {}
+      }
+    }
+    res.end();
   } catch (e) {
     console.error('Chat API error:', e.message);
-    res.status(500).json({
+    res.status(200).json({
       reply: 'Sorry, I had trouble answering that. Please try again or contact support@metrisenergy.com.',
     });
   }

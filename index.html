@@ -811,7 +811,37 @@
     .chat-msg-content ol, .chat-msg-content ul { margin: 4px 0 8px 0; padding-left: 20px; }
     .chat-msg-content li { margin-bottom: 4px; }
     .chat-msg-content code { background: var(--bg-secondary); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
-    .chat-typing { padding: 12px 16px; color: var(--text-tertiary); font-size: 14px; }
+    .chat-typing { padding: 12px 16px; color: var(--text-tertiary); font-size: 14px; display: flex; align-items: center; gap: 4px; }
+    .chat-typing-dots { display: inline-flex; gap: 4px; }
+    .chat-typing-dots span {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary);
+      animation: chatDot 1.4s infinite ease-in-out both;
+    }
+    .chat-typing-dots span:nth-child(1) { animation-delay: 0s; }
+    .chat-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes chatDot {
+      0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    .chat-suggestions {
+      display: flex; flex-direction: column; gap: 8px; padding: 0 16px 8px;
+    }
+    .chat-suggestion {
+      padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg); color: var(--text-secondary); font-size: 13px;
+      cursor: pointer; text-align: left; font-family: inherit;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .chat-suggestion:hover { border-color: var(--primary); color: var(--primary); }
+    .chat-sources {
+      margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--text-tertiary);
+    }
+    .chat-sources a {
+      color: var(--primary); text-decoration: none; cursor: pointer;
+    }
+    .chat-sources a:hover { text-decoration: underline; }
     .chat-input-wrap {
       padding: 12px 16px 16px; border-top: 1px solid var(--border);
       display: flex; gap: 8px; align-items: flex-end;
@@ -1103,6 +1133,7 @@
       <button class="chat-panel-close" id="chatPanelClose" onclick="toggleChatPanel()" aria-label="Close chat">&times;</button>
     </div>
     <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-suggestions" id="chatSuggestions"></div>
     <div class="chat-input-wrap">
       <textarea class="chat-input" id="chatInput" placeholder="Ask anything about Metris..." rows="1"></textarea>
       <button class="chat-send" id="chatSend" onclick="sendChatMessage()" aria-label="Send"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
@@ -1482,7 +1513,15 @@
       }));
     }
 
+    const chatHistory = [];
+    const SUGGESTIONS = [
+      'What is Performance Ratio and what is a good PR?',
+      'How do I generate invoices for my customers?',
+      'Why is availability showing N/A for some months?',
+      'How does Metris calculate carbon impact?'
+    ];
     let chatWelcomed = false;
+
     function toggleChatPanel() {
       const panel = document.getElementById('chatPanel');
       panel.classList.toggle('open');
@@ -1491,8 +1530,26 @@
         if (!chatWelcomed) {
           chatWelcomed = true;
           appendChatMessage('assistant', "Hey! I'm Metris AI. I can help you find answers from our knowledge base. Ask me anything about the platform, your data, billing, integrations, or anything else you need a hand with.", false);
+          showSuggestions();
         }
       }
+    }
+
+    function showSuggestions() {
+      const container = document.getElementById('chatSuggestions');
+      container.innerHTML = SUGGESTIONS.map(s =>
+        '<button class="chat-suggestion" onclick="useSuggestion(this)">' + s + '</button>'
+      ).join('');
+    }
+
+    function hideSuggestions() {
+      document.getElementById('chatSuggestions').innerHTML = '';
+    }
+
+    function useSuggestion(btn) {
+      document.getElementById('chatInput').value = btn.textContent;
+      hideSuggestions();
+      sendChatMessage();
     }
 
     function appendChatMessage(role, content, isHtml) {
@@ -1544,35 +1601,127 @@
       return out;
     }
 
+    function extractSources(text) {
+      const match = text.match(/Sources?:\s*(.+)/i);
+      if (!match) return { body: text, sources: [] };
+      const body = text.slice(0, match.index).trim();
+      const raw = match[1].split(/,\s*/);
+      const sources = [];
+      for (const name of raw) {
+        const clean = name.replace(/^\*+|\*+$/g, '').trim();
+        if (!clean) continue;
+        let articleId = null;
+        Object.keys(articles).forEach(id => {
+          if (articles[id].title.toLowerCase() === clean.toLowerCase()) articleId = id;
+        });
+        sources.push({ title: clean, id: articleId });
+      }
+      return { body, sources };
+    }
+
+    function renderSourceLinks(sources) {
+      if (!sources.length) return '';
+      const links = sources.map(s => {
+        if (s.id) return '<a onclick="showArticle(' + s.id + '); return false;" href="#">' + s.title + '</a>';
+        return '<span>' + s.title + '</span>';
+      });
+      return '<div class="chat-sources">Sources: ' + links.join(' &middot; ') + '</div>';
+    }
+
+    function appendStreamedMessage(fullText, contextArticles) {
+      const { body, sources } = extractSources(fullText);
+      const container = document.getElementById('chatMessages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg assistant';
+      const rendered = renderMarkdown(body);
+      const sourceHtml = renderSourceLinks(sources);
+      div.innerHTML = '<div class="chat-msg-label">Metris AI</div><div class="chat-msg-bubble"><div class="chat-msg-content">' + rendered + '</div>' + sourceHtml + '</div>';
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      chatHistory.push({ role: 'assistant', content: fullText });
+    }
+
     async function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const sendBtn = document.getElementById('chatSend');
       const q = (input.value || '').trim();
       if (!q) return;
       input.value = '';
+      hideSuggestions();
       appendChatMessage('user', q);
+      chatHistory.push({ role: 'user', content: q });
+
+      const msgContainer = document.getElementById('chatMessages');
       const typingEl = document.createElement('div');
       typingEl.className = 'chat-msg assistant';
-      typingEl.innerHTML = '<div class="chat-msg-label">Metris AI</div><div class="chat-typing">Thinking...</div>';
-      document.getElementById('chatMessages').appendChild(typingEl);
-      document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+      typingEl.innerHTML = '<div class="chat-msg-label">Metris AI</div><div class="chat-typing"><div class="chat-typing-dots"><span></span><span></span><span></span></div></div>';
+      msgContainer.appendChild(typingEl);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
       sendBtn.disabled = true;
+
       const context = getRelevantArticlesForChat(q, 5);
+
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: q, context })
+          body: JSON.stringify({ question: q, context, history: chatHistory.slice(-10) })
         });
-        const data = res.ok ? await res.json() : null;
-        typingEl.remove();
-        if (data && data.reply) appendChatMessage('assistant', data.reply, false);
-        else appendChatMessage('assistant', 'Sorry, I could not get an answer right now. Please try again or browse the articles above.', false);
+
+        if (!res.ok) throw new Error('Request failed');
+
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('text/event-stream')) {
+          typingEl.remove();
+          const streamDiv = document.createElement('div');
+          streamDiv.className = 'chat-msg assistant';
+          streamDiv.innerHTML = '<div class="chat-msg-label">Metris AI</div><div class="chat-msg-bubble"><div class="chat-msg-content"></div></div>';
+          msgContainer.appendChild(streamDiv);
+          const contentEl = streamDiv.querySelector('.chat-msg-content');
+          let fullText = '';
+
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue;
+              const payload = line.slice(6).trim();
+              if (payload === '[DONE]') break;
+              try {
+                const parsed = JSON.parse(payload);
+                if (parsed.token) {
+                  fullText += parsed.token;
+                  contentEl.innerHTML = renderMarkdown(fullText.replace(/Sources?:.*/i, ''));
+                  msgContainer.scrollTop = msgContainer.scrollHeight;
+                }
+              } catch (_) {}
+            }
+          }
+
+          streamDiv.remove();
+          appendStreamedMessage(fullText, context);
+        } else {
+          const data = await res.json();
+          typingEl.remove();
+          if (data && data.reply) {
+            appendStreamedMessage(data.reply, context);
+          } else {
+            appendChatMessage('assistant', 'Sorry, I could not get an answer right now. Please try again or browse the articles above.', false);
+          }
+        }
       } catch (err) {
         typingEl.remove();
         appendChatMessage('assistant', 'Something went wrong. Please check your connection and try again.', false);
       }
       sendBtn.disabled = false;
+      document.getElementById('chatInput').focus();
     }
 
     document.getElementById('chatInput').addEventListener('keydown', function(e) {
