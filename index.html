@@ -1614,6 +1614,14 @@
       const div = document.createElement('div');
       div.textContent = s;
       let html = div.innerHTML;
+      html = html.replace(/\\\[/g, '');
+      html = html.replace(/\\\]/g, '');
+      html = html.replace(/\\text\{([^}]*)\}/g, '$1');
+      html = html.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1 / $2');
+      html = html.replace(/\\times/g, '×');
+      html = html.replace(/\\div/g, '÷');
+      html = html.replace(/\\pm/g, '±');
+      html = html.replace(/\\\\/g, '');
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
       html = html.replace(/`(.+?)`/g, '<code>$1</code>');
