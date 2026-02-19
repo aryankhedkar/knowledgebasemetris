@@ -1629,20 +1629,16 @@
       let out = '';
       let inOl = false;
       let inUl = false;
-      for (let li = 0; li < lines.length; li++) {
-        const line = lines[li];
+      for (const line of lines) {
         const olMatch = line.match(/^(\d+)\.\s+(.+)/);
         const ulMatch = line.match(/^[-*]\s+(.+)/);
         if (olMatch) {
-          if (!inOl) { if (inUl) { out += '</ul>'; inUl = false; } out += '<ol>'; inOl = true; }
+          const num = parseInt(olMatch[1], 10);
+          if (!inOl) { if (inUl) { out += '</ul>'; inUl = false; } out += '<ol start="' + num + '">'; inOl = true; }
           out += '<li>' + olMatch[2] + '</li>';
         } else if (ulMatch) {
           if (!inUl) { if (inOl) { out += '</ol>'; inOl = false; } out += '<ul>'; inUl = true; }
           out += '<li>' + ulMatch[1] + '</li>';
-        } else if (line.trim() === '' && (inOl || inUl)) {
-          const next = lines.slice(li + 1).find(l => l.trim() !== '');
-          const nextIsList = next && (next.match(/^(\d+)\.\s+/) ? inOl : next.match(/^[-*]\s+/) ? inUl : false);
-          if (!nextIsList) { if (inOl) { out += '</ol>'; inOl = false; } if (inUl) { out += '</ul>'; inUl = false; } out += '<br>'; }
         } else {
           if (inOl) { out += '</ol>'; inOl = false; }
           if (inUl) { out += '</ul>'; inUl = false; }
